@@ -86,6 +86,35 @@ client.on('message', function(message) {
             message.reply("<:no:439399928960253964> you already voted to skip!");
         }
 
+     if (mess.startsWith(prefix+"search")) {
+        try {
+            var videos = await youtube.searchVideos(searchString, 10);
+            let index = 0;
+            msg.channel.send(`
+__**Song selection:**__
+${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
+Please provide a value to select one of the search results ranging from 1-10.
+            `);
+            // eslint-disable-next-line max-depth
+            try {
+                var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
+                    maxMatches: 1,
+                    time: 10000,
+                    errors: ['time']
+                });
+            } catch (err) {
+                console.error(err);
+                return msg.channel.send('No or invalid value entered, cancelling video selection.');
+            }
+            const videoIndex = parseInt(response.first().content);
+            var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
+        } catch (err) {
+            console.error(err);
+            return msg.channel.send('🆘 I could not obtain any search results.');
+        }
+    }
+    return handleVideo(video, msg, voiceChannel);
+
     } else if (mess.startsWith(prefix + "queue")) {
         if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`)
         var message2 = "```";
@@ -176,6 +205,22 @@ function search_video(query, callback) {
         if (!json.items[0]) callback("3_-a9nVZYjk");
         else {
             callback(json.items[0].id.videoId);
+        }
+    });
+}
+
+function search_videos(query, callback) {
+    request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(query) + "&key=" + yt_api_key, function(error, response, body) {
+        var json = JSON.parse(body);
+        if (!json.items[0]) callback("3_-a9nVZYjk");
+        else {
+            let c = 0
+            callback(json.items.forEach(j => {
+                 c+1 
+                 if(c < 10) {
+                     console.log(j.id.videoId)
+                 }
+            }))
         }
     });
 }
