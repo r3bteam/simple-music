@@ -43,9 +43,9 @@ client.on('message', function(message) {
                         .setAuthor("Added to queue", message.author.avatarURL)
                         .setTitle(videoInfo.title)
                         .setURL(videoInfo.url)
-                        .addField("Channel", videoInfo.owner, true)
+                        .addField("Channel", videoInfo.owner)
                         .addField("Duration", videoInfo.duration, true)
-                        .addField("Views", videoInfo.views)
+                        .addField("Published at", videoInfo.datePublished)
                         .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
 						.setColor("RED")
 						.setThumbnail(videoInfo.thumbnailUrl)
@@ -144,7 +144,7 @@ function playMusic(id, message) {
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
-                    message.channel.send(`**Now Playing :notes: \`\`${guilds[message.guild.id].queueNames}\`\`**`)
+                  if(guilds[message.guild.id].queue > 0) message.channel.send(`**Playing :notes: \`\`${guilds[message.guild.id].queueNames}\`\` - Now!**`)
                 }, 500);
             }
         });
