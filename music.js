@@ -100,10 +100,19 @@ client.on('message', function(message) {
         message.channel.send(message2);
     }
 
+if(mess.startsWith(prefix+"stop")) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    message.reply('Alright, **stopped the music and disconnected**');
+    var server = server = servers[message.guild.id];
+    if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
+}
+
 });
 
 
 
+
+//
 client.on('ready', function() {
     console.log("I am ready!");
 });
