@@ -78,7 +78,7 @@ client.on('message', function(message) {
             if (guilds[message.guild.id].skipReq >= Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2)) {
                 skip_song(message);
                 message.channel.send("**:fast_forward: Skipped**");
-                if (!guilds[message.guild.id].isPlaying || !guilds[message.guild.id].queue) message.guild.voiceConnection.disconnect();
+                if (!guilds[message.guild.id].isPlaying) message.guild.voiceConnection.disconnect();
             } else {
                 message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} has vote to skip current song! **` + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) = "**  more votes to skip! **";
             }
@@ -143,8 +143,10 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
                 setTimeout(function() {
+                if(!guilds[message.guild.id].isPlaying) {
                 message.channel.send(`**15 seconds passed, Disconnected**`)
                 if (guilds[message.guild.id].voiceChannel) message.guild.voiceConnection.disconnect()
+                }
             }, 15000)
             } else {
                 setTimeout(function() {
