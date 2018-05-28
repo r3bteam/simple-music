@@ -45,6 +45,77 @@ client.on('message', function(message) {
 	const mess = message.content.toLowerCase();
 	const args = message.content.split(' ').slice(1).join(' ');
 
+
+//
+function skip_song(message) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    dispatcher.end();
+}
+
+function playMusic(id, message) {
+    voiceChannel = message.member.voiceChannel;
+    voiceChannel.join().then(function(connectoin) {
+        let stream = ytdl('https://www.youtube.com/watch?v=' + id, {
+            filter: 'audioonly'
+        });
+        skipReq = 0;
+        skippers = [];
+
+        dispatcher = connectoin.playStream(stream);
+        dispatcher.on('end', function() {
+            skipReq = 0;
+            skippers = [];
+            queue.shift();
+            queueNames.shift();
+            if (queue.length === 0) {
+                queue = [];
+                queueNames = [];
+                isPlaying = false;
+            }
+            else {
+                setTimeout(function() {
+                    playMusic(queue[0], message);
+                    message.channel.send(`**Now Playing \`\`${message}\`\``)
+                }, 500);
+            }
+        });
+    });
+}
+
+
+function getID(str, cb) {
+    if (isYoutube(str)) {
+        cb(getYoutubeID(str));
+    }
+    else {
+        search_video(str, function(id) {
+            cb(id);
+        });
+    }
+}
+
+function add_to_queue(strID) {
+    if (isYoutube(strID)) {
+        queue.push(getYoutubeID(strID));
+    }
+    else {
+        queue.push(strID);
+    }
+}
+
+function search_video(query, cb) {
+    request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(query) + "&key=" + yt_api_key, function(error, response, body) {
+        var json = JSON.parse(body);
+        cb(json.items[0].id.videoId);
+    });
+}
+
+
+function isYoutube(str) {
+    return str.toLowerCase().indexOf('youtube.com') > -1;
+}
+//
+    
 	if (mess.startsWith(prefix + 'play')) {
 		if (!message.member.voiceChannel) return message.reply(novc);
 		if (args.length == 0) return message.channel.send(`:musical_note: **❯ m-play __Youtube URL / Search__**`)
@@ -89,8 +160,8 @@ client.on('message', function(message) {
     
 	else if (mess.startsWith(prefix + 'skip')) {
         if (!message.member.voiceChannel) return message.reply(novc);
-        if(!isPlaying || !queue.length < 0) return message.reply()
-		message.reply(':gear: **تم التخطي**').then(() => {
+        if(!isPlaying || !queue.length < 0) return message.reply(noms)
+		message.channel.send('**:fast_forward: Skipped**').then(() => {
 			skip_song(message);
 			var server = server = servers[message.guild.id];
 			if (message.guild.voiceConnection) message.guild.voiceConnection.end();
@@ -141,79 +212,10 @@ client.on('message', function(message) {
 					.setImage(videoInfo.thumbnailUrl)
 				message.channel.sendEmbed(playing_now_info);
 				queueNames.push(videoInfo.title);
-				// let now_playing = videoInfo.title;
 				now_playing.push(videoInfo.title);
-
 			});
 
 		});
 	}
 
-	function skip_song(message) {
-		if (!message.member.voiceChannel) return message.reply('**عفوا, انت غير موجود في روم صوتي**');
-		dispatcher.end();
-	}
-
-	function playMusic(id, message) {
-		voiceChannel = message.member.voiceChannel;
-
-
-		voiceChannel.join().then(function(connectoin) {
-			let stream = ytdl('https://www.youtube.com/watch?v=' + id, {
-				filter: 'audioonly'
-			});
-			skipReq = 0;
-			skippers = [];
-
-			dispatcher = connectoin.playStream(stream);
-			dispatcher.on('end', function() {
-				skipReq = 0;
-				skippers = [];
-				queue.shift();
-				queueNames.shift();
-				if (queue.length === 0) {
-					queue = [];
-					queueNames = [];
-					isPlaying = false;
-				}
-				else {
-					setTimeout(function() {
-						playMusic(queue[0], message);
-					}, 500);
-				}
-			});
-		});
-	}
-
-	function getID(str, cb) {
-		if (isYoutube(str)) {
-			cb(getYoutubeID(str));
-		}
-		else {
-			search_video(str, function(id) {
-				cb(id);
-			});
-		}
-	}
-
-	function add_to_queue(strID) {
-		if (isYoutube(strID)) {
-			queue.push(getYoutubeID(strID));
-		}
-		else {
-			queue.push(strID);
-		}
-	}
-
-	function search_video(query, cb) {
-		request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(query) + "&key=" + yt_api_key, function(error, response, body) {
-			var json = JSON.parse(body);
-			cb(json.items[0].id.videoId);
-		});
-	}
-
-
-	function isYoutube(str) {
-		return str.toLowerCase().indexOf('youtube.com') > -1;
-	}
 });
