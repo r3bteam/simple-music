@@ -46,7 +46,7 @@ client.on('message', function(message) {
                         .setURL(videoInfo.url)
                         .addField("Channel", videoInfo.owner, true)
                         .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
-                        .addField("Published at", videoInfo.datePublished)
+                        .addField("Published at", videoInfo.datePublished, true)
                         .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
 						.setColor("RED")
 						.setThumbnail(videoInfo.thumbnailUrl)
@@ -142,6 +142,10 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
+                setTimeout(function() {
+                message.channel.send(`**15 seconds passed, Disconnected**`)
+                if (guilds[message.guild.id].voiceChannel) message.guild.voiceConnection.disconnect()
+            }, 15000)
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
