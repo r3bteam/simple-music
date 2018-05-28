@@ -142,12 +142,6 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
-                setTimeout(function() {
-                if(!guilds[message.guild.id].isPlaying) {
-                message.channel.send(`**15 seconds passed, Disconnected**`)
-                if (guilds[message.guild.id].voiceChannel) message.guild.voiceConnection.disconnect()
-                }
-            }, 15000)
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
