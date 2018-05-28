@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const ytdl = require("ytdl-core");
 const request = require("request");
+const convert = require("convert-seconds")
 const fs = require("fs");
 const getYouTubeID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
@@ -44,7 +45,7 @@ client.on('message', function(message) {
                         .setTitle(videoInfo.title)
                         .setURL(videoInfo.url)
                         .addField("Channel", videoInfo.owner, true)
-                        .addField("Duration", videoInfo.duration, true)
+                        .addField("Duration", convert(videoInfo.duration) , true)
                         .addField("Published at", videoInfo.datePublished)
                         .addField("Postion in queue", guilds[message.guild.id].queueNames.length)
 						.setColor("RED")
