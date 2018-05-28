@@ -7,11 +7,10 @@ const getYouTubeID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
 const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4"
 const prefix = "m-";
-var guilds = {};
 client.login(process.env.SECERT_KEY);
+var guilds = {};
 
-//
-
+/////////////////////////////////////////////////////////////////////////////////
 
 client.on('message', function(message) {
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
@@ -32,8 +31,9 @@ client.on('message', function(message) {
         };
     }
 
-    if (mess.startsWith(prefix + "play") || mess.startsWith(prefix + "p")) {
+    if (mess.startsWith(prefix + "play")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
+ 		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
                 getID(args, function(id) {
                     add_to_queue(id, message);
@@ -56,9 +56,10 @@ client.on('message', function(message) {
                 });
             }
         } else {
-            message.reply(" you need to be in a voice channel!");
+            message.reply(novc);
         }
     } else if (mess.startsWith(prefix + "skip")) {
+        if(!member.voiceChannel) return message.reply(novc)
         if (guilds[message.guild.id].skippers.indexOf(message.author.id) === -1) {
             guilds[message.guild.id].skippers.push(message.author.id);
             guilds[message.guild.id].skipReq++;
@@ -71,6 +72,7 @@ client.on('message', function(message) {
         } else {
             message.reply(" you already voted to skip!");
         }
+        
     } else if (mess.startsWith(prefix + "queue")) {
         var message2 = "```";
         for (var i = 0; i < guilds[message.guild.id].queueNames.length; i++) {
@@ -92,11 +94,11 @@ client.on('message', function(message) {
 
 
 client.on('ready', function() {
-    client.user.setActivity(`m-help`, {type: "LISTENING"})
+    console.log("I am ready!");
 });
 
 function skip_song(message) {
-    guilds[message.guild.id].dispfatcher.end();
+    guilds[message.guild.id].dispatcher.end();
 }
 
 function playMusic(id, message) {
