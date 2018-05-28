@@ -33,33 +33,28 @@ var download = function(uri, filename, callback) {
 	request.head(uri, function(err, res, body) {
 		console.log('content-type:', res.headers['content-type']);
 		console.log('content-length:', res.headers['content-length']);
-
+        client.user.setActivity(`m-play | ${client.guilds.size} servers`)
 		request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
 	});
 };
 
 client.on('message', function(message) {
+    const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
+    const novc = "**<:no:439399928960253964> | You are not in a voice channel.**"
 	const member = message.member;
 	const mess = message.content.toLowerCase();
 	const args = message.content.split(' ').slice(1).join(' ');
 
 	if (mess.startsWith(prefix + 'play')) {
-		if (!message.member.voiceChannel) return message.reply('** You Are Not In VoiceChannel **');
-		// if user is not insert the URL or song title
-		if (args.length == 0) {
-			let play_info = new Discord.RichEmbed()
-				.setAuthor(client.user.username, client.user.avatarURL)
-				.setDescription('**قم بوضع الرابط , او  الاسم**')
-			message.channel.sendEmbed(play_info)
-			return;
-		}
+		if (!message.member.voiceChannel) return message.reply(novc);
+		if (args.length == 0) return message.channel.send(`:musical_note: **❯ m-play __Youtube URL / Search__**`)
 		if (queue.length > 0 || isPlaying) {
 			getID(args, function(id) {
 				add_to_queue(id);
 				fetchVideoInfo(id, function(err, videoInfo) {
 					if (err) throw new Error(err);
 					let play_info = new Discord.RichEmbed()
-						.setAuthor("أضيف إلى قائمة الانتظار", message.author.avatarURL)
+						.setAuthor("Added to queue", message.author.avatarURL)
 						.setDescription(`**${videoInfo.title}**`)
 						.setColor("RANDOM")
 						.setFooter('Requested By:' + message.author.tag)
@@ -74,7 +69,6 @@ client.on('message', function(message) {
 			});
 		}
 		else {
-
 			isPlaying = true;
 			getID(args, function(id) {
 				queue.push('placeholder');
@@ -82,19 +76,20 @@ client.on('message', function(message) {
 				fetchVideoInfo(id, function(err, videoInfo) {
 					if (err) throw new Error(err);
 					let play_info = new Discord.RichEmbed()
-						.setAuthor(`Added To Queue`, message.author.avatarURL)
+						.setAuthor(`Now Playing`, message.author.avatarURL)
 						.setDescription(`**${videoInfo.title}**`)
 						.setColor("RANDOM")
-						.setFooter('بطلب من: ' + message.author.tag)
+						.setFooter('Requested by ' + message.author.tag)
 						.setThumbnail(videoInfo.thumbnailUrl)
-					//.setDescription('?')
 					message.channel.sendEmbed(play_info);
 				});
 			});
 		}
-	}
+    }
+    
 	else if (mess.startsWith(prefix + 'skip')) {
-		if (!message.member.voiceChannel) return message.reply('**عفوا ,انت غير موجود في روم صوتي**');
+        if (!message.member.voiceChannel) return message.reply(novc);
+        if(!isPlaying || !queue.length < 0) return message.reply()
 		message.reply(':gear: **تم التخطي**').then(() => {
 			skip_song(message);
 			var server = server = servers[message.guild.id];
