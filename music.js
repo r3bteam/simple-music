@@ -47,7 +47,7 @@ client.on('message', function(message) {
                         .addField("Channel", videoInfo.owner, true)
                         .addField("Duration", convert(videoInfo.duration) , true)
                         .addField("Published at", videoInfo.datePublished)
-                        .addField("Postion in queue", guilds[message.guild.id].queueNames.length)
+                        .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
 						.setColor("RED")
 						.setThumbnail(videoInfo.thumbnailUrl)
                         )
@@ -145,7 +145,7 @@ function playMusic(id, message) {
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
-                  if(guilds[message.guild.id].queue > 0) message.channel.send(`**Playing :notes: \`\`${guilds[message.guild.id].queueNames}\`\` - Now!**`)
+                   message.channel.send(`**Playing :notes: \`\`${guilds[message.guild.id].queueNames}\`\` - Now!**`)
                 }, 500);
             }
         });
