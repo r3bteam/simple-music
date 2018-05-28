@@ -44,7 +44,6 @@ client.on('message', function(message) {
                         .setTitle(videoInfo.title)
                         .setURL(`https://www.youtube.com/watch?v=${id}`)
                         .addField("Channel", videoInfo.channelTitle, true)
-                        .addField("Duration", videoInfo.contentDetails.duration, true)
                         .addField("Postion in queue", guilds[mesage.guild.id].queueNames.length, true)
 						.setColor("RED")
 						.setThumbnail(videoInfo.thumbnailUrl)
