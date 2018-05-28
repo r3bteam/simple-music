@@ -154,11 +154,23 @@ function isYoutube(str) {
 	else if (mess.startsWith(prefix + 'skip')) {
         if (!message.member.voiceChannel) return message.reply(novc);
         if(!isPlaying || !queue.length < 0) return message.reply(noms)
+        if(message.member.hasPermission('MANAGE_CHANNELS')) {
 		message.channel.send('**:fast_forward: Skipped**').then(() => {
 			skip_song(message);
 			var server = server = servers[message.guild.id];
-			if (!isPlaying || !queue) message.guild.voiceConnection.disconnect();
-		});
+            if (!isPlaying || !queue) message.guild.voiceConnection.disconnect();
+        });
+      } else {
+        skipReq + 1
+        message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} is voting to skip this song.** ${skipReq}/5`)
+        if(skipReq >= 5) {
+            message.channel.send('**:fast_forward: Skipped**').then(() => {
+                skip_song(message);
+                var server = server = servers[message.guild.id];
+                if (!isPlaying || !queue) message.guild.voiceConnection.disconnect();
+            });
+        }
+      }
     }
     
 	else if (message.content.startsWith(prefix + 'vol')) {
