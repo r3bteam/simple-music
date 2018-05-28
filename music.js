@@ -75,8 +75,13 @@ client.on('message', function(message) {
             guilds[message.guild.id].skippers.push(message.author.id);
             guilds[message.guild.id].skipReq++;
             if (guilds[message.guild.id].skipReq >= Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2)) {
+                if(!guilds[message.guild.id].queue | !guilds[message.guild.id].isPlaying) {
+                    skip_song(message);
+                    message.reply("**:mailbox_with_no_mail: Successfully disconnected**");
+                } else {
                 skip_song(message);
                 message.reply(" your skip has been acknowledged. Skipping now!");
+                }
             } else {
                 message.reply(" your skip has been acknowledged. You need **" + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) = "**  more skip votes!";
             }
@@ -103,14 +108,11 @@ client.on('message', function(message) {
 
 if(mess.startsWith(prefix+"stop")) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    message.reply('Alright, **stopped the music and disconnected**');
-    var server = server = servers[message.guild.id];
-    if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
+    message.reply("**:mailbox_with_no_mail: Successfully disconnected**");
+    if (guilds[message.guild.id].voiceChannel) message.guild.voiceConnection.disconnect().then(guilds[message.guild.id].dispatcher.end())
 }
 
 });
-
-
 
 
 //
