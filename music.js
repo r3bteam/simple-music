@@ -43,10 +43,10 @@ client.on('message', function(message) {
                         .setAuthor("Added to queue", message.author.avatarURL)
                         .setTitle(videoInfo.title)
                         .setURL(videoInfo.url)
-                        .addField("Channel", videoInfo.owner)
+                        .addField("Channel", videoInfo.owner, true)
                         .addField("Duration", videoInfo.duration, true)
                         .addField("Published at", videoInfo.datePublished)
-                        .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
+                        .addField("Postion in queue", guilds[message.guild.id].queueNames.length)
 						.setColor("RED")
 						.setThumbnail(videoInfo.thumbnailUrl)
                         )
@@ -75,18 +75,14 @@ client.on('message', function(message) {
             guilds[message.guild.id].skippers.push(message.author.id);
             guilds[message.guild.id].skipReq++;
             if (guilds[message.guild.id].skipReq >= Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2)) {
-                if(!guilds[message.guild.id].queue | !guilds[message.guild.id].isPlaying) {
-                    skip_song(message);
-                    message.reply("**:mailbox_with_no_mail: Successfully disconnected**");
-                } else {
                 skip_song(message);
-                message.reply(" your skip has been acknowledged. Skipping now!");
-                }
+                message.channel.send("**:fast_forward: Skipped**");
+                if (!guilds[message.guild.id].isPlaying || !guilds[message.guild.id].queue) message.guild.voiceConnection.disconnect();
             } else {
-                message.reply(" your skip has been acknowledged. You need **" + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) = "**  more skip votes!";
+                message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} has vote to skip current song! **` + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) = "**  more votes to skip! **";
             }
         } else {
-            message.reply(" you already voted to skip!");
+            message.reply("<:no:439399928960253964> you already voted to skip!");
         }
 
     } else if (mess.startsWith(prefix + "queue")) {
@@ -108,11 +104,13 @@ client.on('message', function(message) {
 
 if(mess.startsWith(prefix+"stop")) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    message.reply("**:mailbox_with_no_mail: Successfully disconnected**");
-    if (guilds[message.guild.id].voiceChannel) message.guild.voiceConnection.disconnect().then(guilds[message.guild.id].dispatcher.end())
+    message.channel.send('**:mailbox_with_no_mail: Successfully disconnected**');
+    if (guilds[message.guild.id].voiceChannel) message.guild.voiceConnection.disconnect()
 }
 
 });
+
+
 
 
 //
