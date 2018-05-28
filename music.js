@@ -75,7 +75,7 @@ function playMusic(id, message) {
             else {
                 setTimeout(function() {
                     playMusic(queue[0], message);
-                    message.channel.send(`**Now Playing \`\`${message}\`\``)
+                    message.channel.send(`**Now Playing :notes: \`\`${now_playing}\`\`**`)
                 }, 500);
             }
         });
@@ -118,7 +118,7 @@ function isYoutube(str) {
     
 	if (mess.startsWith(prefix + 'play')) {
 		if (!message.member.voiceChannel) return message.reply(novc);
-		if (args.length == 0) return message.channel.send(`:musical_note: **❯ m-play __Youtube URL / Search__**`)
+		if (args.length == 0) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
 		if (queue.length > 0 || isPlaying) {
 			getID(args, function(id) {
 				add_to_queue(id);
@@ -128,17 +128,16 @@ function isYoutube(str) {
 						.setAuthor("Added to queue", message.author.avatarURL)
 						.setDescription(`**${videoInfo.title}**`)
 						.setColor("RANDOM")
-						.setFooter('Requested By:' + message.author.tag)
+						.setFooter('Requested By ' + message.author.tag)
 						.setImage(videoInfo.thumbnailUrl)
-					//.setDescription('?')
-					message.channel.sendEmbed(play_info);
+					message.channel.send(play_info);
 					queueNames.push(videoInfo.title);
 					// let now_playing = videoInfo.title;
 					now_playing.push(videoInfo.title);
-
 				});
 			});
-		}
+        }
+
 		else {
 			isPlaying = true;
 			getID(args, function(id) {
@@ -146,76 +145,54 @@ function isYoutube(str) {
 				playMusic(id, message);
 				fetchVideoInfo(id, function(err, videoInfo) {
 					if (err) throw new Error(err);
-					let play_info = new Discord.RichEmbed()
-						.setAuthor(`Now Playing`, message.author.avatarURL)
-						.setDescription(`**${videoInfo.title}**`)
-						.setColor("RANDOM")
-						.setFooter('Requested by ' + message.author.tag)
-						.setThumbnail(videoInfo.thumbnailUrl)
-					message.channel.sendEmbed(play_info);
+					message.channel.send(`**Playing :notes: \`\`${videoInfo.title}\`\` - Now!**`);
 				});
 			});
 		}
     }
-    
+
 	else if (mess.startsWith(prefix + 'skip')) {
         if (!message.member.voiceChannel) return message.reply(novc);
         if(!isPlaying || !queue.length < 0) return message.reply(noms)
 		message.channel.send('**:fast_forward: Skipped**').then(() => {
 			skip_song(message);
 			var server = server = servers[message.guild.id];
-			if (message.guild.voiceConnection) message.guild.voiceConnection.end();
+			if (!isPlaying || !queue) message.guild.voiceConnection.disconnect();
 		});
-	}
+    }
+    
 	else if (message.content.startsWith(prefix + 'vol')) {
-		if (!message.member.voiceChannel) return message.reply('**عفوا ,انت غير موجود في روم صوتي**');
-		// console.log(args)
+        return message.channel.send(new Discord.RichEmbed().setDescription("**You must have Premium to use this command!**"))
+        if (!message.member.voiceChannel) return message.reply(novc);
 		if (args > 100) return message.reply(':x: **100**');
 		if (args < 1) return message.reply(":x: **1**");
 		dispatcher.setVolume(1 * args / 50);
 		message.channel.sendMessage(`Volume Updated To: **${dispatcher.volume*50}**`);
-	}
+    }
+    
 	else if (mess.startsWith(prefix + 'pause')) {
-		if (!message.member.voiceChannel) return message.reply('**عفوا ,انت غير موجود في روم صوتي**');
-		message.reply(':gear: **تم الايقاف مؤقت**').then(() => {
+		if (!message.member.voiceChannel) return message.reply(novc);
+		message.reply(':pause_button: **Paused**').then(() => {
 			dispatcher.pause();
 		});
-	}
-	else if (mess.startsWith(prefix + 'unpause')) {
-		if (!message.member.voiceChannel) return message.reply('**عفوا ,انت غير موجود في روم صوتي**');
-		message.reply(':gear: **تم اعاده التشغيل**').then(() => {
+    }
+    
+	else if (mess.startsWith(prefix + 'resume')) {
+		if (!message.member.voiceChannel) return message.reply(novc);
+		message.reply(':play_pause: **Resuming**').then(() => {
 			dispatcher.resume();
 		});
-	}
+    }
+    
 	else if (mess.startsWith(prefix + 'stop')) {
-		if (!message.member.voiceChannel) return message.reply('**عفوا ,انت غير موجود في روم صوتي**');
+		if (!message.member.voiceChannel) return message.reply(novc);
 		message.reply(':name_badge: **تم الايقاف**');
 		var server = server = servers[message.guild.id];
 		if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
-	}
+    }
+    
 	else if (mess.startsWith(prefix + 'join')) {
-		if (!message.member.voiceChannel) return message.reply('**عفوا ,انت غير موجود في روم صوتي**');
+		if (!message.member.voiceChannel) return message.reply(novc);
 		message.member.voiceChannel.join().then(message.react('✅'));
 	}
-	else if (mess.startsWith(prefix + 'play')) {
-		getID(args, function(id) {
-			add_to_queue(id);
-			fetchVideoInfo(id, function(err, videoInfo) {
-				if (err) throw new Error(err);
-				if (!message.member.voiceChannel) return message.reply('**عفوا, انت غير موجود في روم صوتي**');
-				if (isPlaying == false) return message.reply(':x:');
-				let playing_now_info = new Discord.RichEmbed()
-					.setAuthor(client.user.username, client.user.avatarURL)
-					.setDescription(`**${videoInfo.title}**`)
-					.setColor("RANDOM")
-					.setFooter('Requested By:' + message.author.tag)
-					.setImage(videoInfo.thumbnailUrl)
-				message.channel.sendEmbed(playing_now_info);
-				queueNames.push(videoInfo.title);
-				now_playing.push(videoInfo.title);
-			});
-
-		});
-	}
-
 });
