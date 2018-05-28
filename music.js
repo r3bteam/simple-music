@@ -153,7 +153,7 @@ function search_video(query, callback) {
         var json = JSON.parse(body);
         if (!json.items[0]) callback("3_-a9nVZYjk");
         else {
-            callback(jsonf.items[0].id.videoId);
+            callback(json.items[0].id.videoId);
         }
     });
 }
