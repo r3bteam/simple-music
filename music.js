@@ -209,22 +209,6 @@ function search_video(query, callback) {
     });
 }
 
-function search_videos(query, callback) {
-    request("https://www.googleapis.com/youtube/v3/search?part=id&type=video&q=" + encodeURIComponent(query) + "&key=" + yt_api_key, function(error, response, body) {
-        var json = JSON.parse(body);
-        if (!json.items[0]) callback("3_-a9nVZYjk");
-        else {
-            let c = 0
-            callback(json.items.forEach(j => {
-                 c+1 
-                 if(c < 10) {
-                     console.log(j.id.videoId)
-                 }
-            }))
-        }
-    });
-}
-
 function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
