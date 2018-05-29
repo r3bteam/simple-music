@@ -108,9 +108,9 @@ client.on('message', async function(message) {
         }
 
     } else if (mess.startsWith(prefix + "queue")) {
-        if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`)
-        var message2 = "```";
+        if(!guilds[message.guild.id].queue) return message.channel.send(`**:x: Nothing playing in this server**`)
         for (var i = 0; i < guilds[message.guild.id].queueNames.length; i++) {
+            guilds[message.guild.id].queueNames.map(song => console.log(song))
             var temp = (i + 1) + ": " + guilds[message.guild.id].queueNames[i] + (i === 0 ? "(Current Song)" : "") + "\n";
             if ((message2 + temp).length <= 2000 - 3) {
                 message2 += temp;
