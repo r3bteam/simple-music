@@ -117,8 +117,11 @@ client.on('message', async function(message) {
         return message.channel.send(`
             **Now playing:** ${guilds[message.guild.id].queueNames[0]}\n
         `).then(() => {
-            guilds[message.guild.id].queueNames.shift();
-            message.channel.send(`${guilds[message.guild.id].queueNames.map(song => `**-** ${song}`).join('\n')}`)
+            if(guilds[message.guild.id].queueNames.slice(1)){
+            message.channel.send(`${guilds[message.guild.id].queueNames.slice(1).map(song => `**-** ${song}`).join('\n')}`)
+            } else {
+                return;
+            }
         })
     }
 
