@@ -91,7 +91,7 @@ client.on('message', async function(message) {
 
     } else if (mess.startsWith(prefix + "skip")) {
         if(!message.member.voiceChannel) return message.reply(novc)
-        if(!member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
+        if(member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
         if(message.member.hasPermission('MANAGE_CHANNELS'))
         skip_song(message);
         message.channel.send("**:fast_forward: Skipped**");
