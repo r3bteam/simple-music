@@ -105,14 +105,18 @@ client.on('message', async function(message) {
             if ((message2 + temp).length <= 2000 - 3) {
                 message2 += temp;
             } else {
-                message2 += "```";
-                message.channel.send(message2);
-                message2 = "```";
-            }
+                message.channel.send({
+                    embed: {
+                        title: `${message.guild.name}'s queue.`,
+                        color: 3447003,
+                        description: `${message2}`
+                    }
+            })
         }
         message2 += "```";
         message.channel.send(message2);
     }
+}
 
 if(mess.startsWith(prefix+"stop")) {
     if (!message.member.voiceChannel) return message.reply(novc);
