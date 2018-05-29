@@ -46,6 +46,7 @@ client.on('message', async function(message) {
 
     if (mess.startsWith(prefix + "play")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
+        if(member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then((msg)=> {
@@ -92,18 +93,21 @@ client.on('message', async function(message) {
     } else if (mess.startsWith(prefix + "skip")) {
         if(!message.member.voiceChannel) return message.reply(novc)
         if(member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
-        if(message.member.hasPermission('MANAGE_CHANNELS'))
+        if(message.member.hasPermission('MANAGE_CHANNELS')) {
+        if (guilds[message.guild.id].queueNames != undefined) {
         skip_song(message);
         message.channel.send("**:fast_forward: Skipped**");
-        if (!guilds[message.guild.id].queueNames < 1) return message.channel.send(`**:x: Nothing playing in this server**`);
+        } else return message.channel.send(`**:x: Nothing playing in this server**`);
+        }
         else
         if (guilds[message.guild.id].skippers.indexOf(message.author.id) === -1) {
             guilds[message.guild.id].skippers.push(message.author.id);
             guilds[message.guild.id].skipReq++;
             if (guilds[message.guild.id].skipReq >= Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2)) {
+                if (guilds[message.guild.id].queueNames != undefined) {
                 skip_song(message);
                 message.channel.send("**:fast_forward: Skipped**");
-                if (!guilds[message.guild.id].queueNames < 1) return message.channel.send(`**:x: Nothing playing in this server**`);
+                } else return message.channel.send(`**:x: Nothing playing in this server**`);
             } else {
                 message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} has vote to skip current song! **` + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) + "**  more votes to skip! **";
             }
@@ -124,6 +128,7 @@ client.on('message', async function(message) {
 
 if(mess.startsWith(prefix+"stop")) {
     if (!message.member.voiceChannel) return message.reply(novc);
+    if(member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
     if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
     if (guilds[message.guild.id].voiceChannel)
     { 
@@ -135,6 +140,7 @@ if(mess.startsWith(prefix+"stop")) {
 
 else if (message.content.startsWith(prefix + 'vol')) {
     if (!message.member.voiceChannel) return message.reply(novc);
+    if(member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
     if (guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     if (args > 100) return message.reply('**:headphones: For some health reasons the max vol you can use is ``150``, kthx**');
     if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``150``**");
@@ -144,6 +150,7 @@ else if (message.content.startsWith(prefix + 'vol')) {
 
 else if (mess.startsWith(prefix + 'pause')) {
     if (!message.member.voiceChannel) return message.reply(novc);
+    if(member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
     if (guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':pause_button: **Paused**').then(() => {
         guilds[message.guild.id].dispatcher.pause();
@@ -152,6 +159,7 @@ else if (mess.startsWith(prefix + 'pause')) {
 
 else if (mess.startsWith(prefix + 'resume')) {
     if (!message.member.voiceChannel) return message.reply(novc);
+    if(member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
     if (guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':play_pause: **Resuming**').then(() => {
         guilds[message.guild.id].dispatcher.resume();
@@ -161,8 +169,10 @@ else if (mess.startsWith(prefix + 'resume')) {
 
 else if (mess.startsWith(prefix + 'join')) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if(!guilds[message.guild.id].isPlaying) {
+    if(!guilds[message.guild.id].isPlaying || guilds[message.guild.id].queueNames.length <= 0) {
         message.member.voiceChannel.join().then(message.react(correct));
+        guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
+        message.channel.send(`**:page_facing_up: Queue moved to \`\`${message.member.voiceChannel.name}\`\`**`)
     } else {
         message.channel.send(`<:no:439399928960253964> **Music is being played in another voice channel!**`)
     }
