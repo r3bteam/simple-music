@@ -21,6 +21,9 @@ client.channels.get()
 client.on('message', async function(message) {
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
     const novc = "**<:no:439399928960253964> | You are not in a voice channel.**"
+    const yt = "<:MxYT:451042476552355841>"
+    const correct = client.emojis.get("451042988756434964")
+    const nope = client.emojis.get("451043013100044298")
     const member = message.member;
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
@@ -47,9 +50,12 @@ client.on('message', async function(message) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
+                message.channel.send(`**${yt} Searching: \`\`${args}\`\`**`).then((msg)=> {
                 getID(args, function(id) {
                     add_to_queue(id, message);
                     fetchVideoInfo(id, function(err, videoInfo) {
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope));
+                        else msg.react(correct)
                         if (err) throw new Error(err);
                         message.channel.send(new Discord.RichEmbed()
                         .setAuthor("Added to queue", message.author.avatarURL)
@@ -64,18 +70,21 @@ client.on('message', async function(message) {
                         )
                         guilds[message.guild.id].queueNames.push(videoInfo.title);
                     });
-                });
+                })
+            })
             } else {
                 isPlaying = true;
+                message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(
                 getID(args, function(id) {
                     guilds[message.guild.id].queue.push(id);
                     playMusic(id, message);
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`);
                         guilds[message.guild.id].queueNames.push(videoInfo.title);
                         message.channel.send(`**Playing :notes: \`\`${videoInfo.title}\`\` - Now!**`);
                     });
-                });
+                }))
             }
         } else {
             message.reply(novc);
@@ -201,7 +210,7 @@ function playMusic(id, message) {
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
-                   message.channel.send(`**Playing :notes: \`\`${guilds[message.guild.id].queueNames}\`\` - Now!**`)
+                   message.channel.send(`**Playing :notes: \`\`${guilds[message.guild.id].queueNames[0]}\`\` - Now!**`)
                 }, 500);
             }
         });
