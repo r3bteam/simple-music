@@ -17,7 +17,8 @@ client.on('ready', function() {
 
 client.on('message', async function(message) {
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
-    const novc = "**<:no:439399928960253964> | You are not in a voice channel.**"
+    const nomatch = "**<:no:439399928960253964> | You are not in a voice channel.**"
+    const noms = "**:MxNo: You've to be in the same voice channel!**"
     const yt = "<:MxYT:451042476552355841>"
     const correct = client.guilds.get('448425456316973057').emojis.get("451040030635458574")
     const nope = client.guilds.get('448425456316973057').emojis.get('451040030635458574')
@@ -45,6 +46,7 @@ client.on('message', async function(message) {
 
     if (mess.startsWith(prefix + "play")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
+        if(!member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch);
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then((msg)=> {
@@ -89,7 +91,8 @@ client.on('message', async function(message) {
         }
 
     } else if (mess.startsWith(prefix + "skip")) {
-        if(!member.voiceChannel) return message.reply(novc)
+        if(!message.member.voiceChannel) return message.reply(novc)
+        if(!member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
         if(message.member.hasPermission('MANAGE_CHANNELS'))
         skip_song(message);
         message.channel.send("**:fast_forward: Skipped**");
@@ -160,7 +163,7 @@ else if (mess.startsWith(prefix + 'resume')) {
 else if (mess.startsWith(prefix + 'join')) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if(!guilds[message.guild.id].isPlaying) {
-        message.member.voiceChannel.join().then(message.react('✅'));
+        message.member.voiceChannel.join().then(message.react(correct));
     } else {
         message.channel.send(`<:no:439399928960253964> **Music is being played in another voice channel!**`)
     }
