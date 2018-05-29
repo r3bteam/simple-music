@@ -93,6 +93,11 @@ client.on('message', async function(message) {
 
     } else if (mess.startsWith(prefix + "skip")) {
         if(!member.voiceChannel) return message.reply(novc)
+        if(message.member.hasPermission('MANAGE_CHANNELS'))
+        skip_song(message);
+        message.channel.send("**:fast_forward: Skipped**");
+        if (!guilds[message.guild.id].isPlaying) message.guild.voiceConnection.disconnect();
+        else
         if (guilds[message.guild.id].skippers.indexOf(message.author.id) === -1) {
             guilds[message.guild.id].skippers.push(message.author.id);
             guilds[message.guild.id].skipReq++;
