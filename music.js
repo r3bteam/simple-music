@@ -47,7 +47,6 @@ client.on('message', async function(message) {
     }
 
     if (mess.startsWith(prefix + "play")) {
-        console.log(nope)
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
