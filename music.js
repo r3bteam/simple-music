@@ -13,30 +13,12 @@ client.login(process.env.SECERT_KEY);
 var guilds = {};
 client.on('ready', function() {
     console.log("[Launching...] Matrix Premium Music Bot V0.9");
-    client.guilds.forEach(g=> {
-        g.defaultChannel.send(`\`\`**Disconnecting... ${new Date().toDateString()}\`\` \n
-        نأسف منكم, يتم حالياً صيانة خوادم الموسيقى وسيتم إرجعاها في أقرب وقت..
-        
-        -Matrix Team**`)
-    })
 });
 client.on('reconnecting', function() {
     console.log("[Reconnting...] Matrix Premium Music Bot V0.9");
-    client.guilds.forEach(g=> {
-        g.defaultChannel.send(`\`\`**Disconnecting... ${new Date().toDateString()}\`\` \n
-        نأسف منكم, يتم حالياً صيانة خوادم الموسيقى وسيتم إرجعاها في أقرب وقت..
-        
-        -Matrix Team**`)
-    })
 });
 client.on('disconnect', function() {
     console.log("[Disconnecting...] Matrix Premium Music Bot V0.9");
-    client.guilds.forEach(g=> {
-        g.defaultChannel.send(`\`\`**Disconnecting... ${new Date().toDateString()}\`\` \n
-        نأسف منكم, يتم حالياً صيانة خوادم الموسيقى وسيتم إرجعاها في أقرب وقت..
-        
-        -Matrix Team**`)
-    })
 });
 /////////////////////////////////////////////////////////////////////////////////
 
