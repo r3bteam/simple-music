@@ -10,7 +10,9 @@ const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4"
 const prefix = "m-";
 client.login(process.env.SECERT_KEY);
 var guilds = {};
-
+client.on('ready', function() {
+    console.log("Matrix Premium [Moosik Bot] V0.9");
+});
 /////////////////////////////////////////////////////////////////////////////////
 
 client.on('message', async function(message) {
@@ -143,7 +145,8 @@ if(mess.startsWith(prefix+"stop")) {
     if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
     if (guilds[message.guild.id].voiceChannel)
     { 
-    await clear().then(message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`))
+    await clear()
+    message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
     }
 }
 
@@ -182,10 +185,6 @@ else if (mess.startsWith(prefix + 'join')) {
 
 
 //
-client.on('ready', function() {
-    console.log("Matrix Premium [Moosik Bot]");
-});
-
 function skip_song(message) {
     guilds[message.guild.id].dispatcher.end();
 }
