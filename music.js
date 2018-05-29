@@ -42,6 +42,10 @@ client.on('message', async function(message) {
         guilds[message.guild.id].queue = [];
         guilds[message.guild.id].queueNames = [];
         guilds[message.guild.id].isPlaying = false;
+        guilds[message.guild.id].dispatcher = null
+        guilds[message.guild.id].voiceChannel = null;
+        guilds[message.guild.id].skipReq = 0;
+        guilds[message.guild.id].skipReq = [];
     }
 
     if (mess.startsWith(prefix + "play")) {
@@ -170,6 +174,16 @@ else if (mess.startsWith(prefix + 'join')) {
         message.channel.send(`<:no:439399928960253964> **Music is being played in another voice channel!**`)
     }
 }
+
+else if (mess.startsWith(prefix + 'clear')) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+   if(guilds[message.guild.id].queueNames.length > 1) {
+    guilds[message.guild.id].queueNames = queueNames[0]
+    guilds[message.guild.id].queue = queue[0] 
+   }
+}
+
+
 });
 
 
