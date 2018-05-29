@@ -136,10 +136,12 @@ if(mess.startsWith(prefix+"stop")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     message.channel.send('**:mailbox_with_no_mail: Successfully disconnected**');
     guilds[message.guild.id].dispatcher.end();
-    if (guilds[message.guild.id].voiceChannel) message.guild.voiceConnection.disconnect()
+    if (guilds[message.guild.id].voiceChannel)
+    { message.guild.voiceConnection.disconnect()
     guilds[message.guild.id].queue = [];
     guilds[message.guild.id].queueNames = [];
     guilds[message.guild.id].isPlaying = false;
+    }
 }
 
 });
@@ -175,6 +177,7 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
+                message.guild.voiceChannel.disconnect();
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
