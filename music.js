@@ -108,7 +108,7 @@ client.on('message', async function(message) {
         }
 
     } else if (mess.startsWith(prefix + "queue")) {
-        if(!guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`)
+        if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`);
         return message.channel.send(`
             **Now playing:** ${guilds[message.guild.id].queueNames[0]}\n
             ${guilds[message.guild.id].queueNames.map(song => `**-** ${song}`).join('\n')}
