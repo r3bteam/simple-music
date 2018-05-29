@@ -32,6 +32,12 @@ client.on('message', async function(message) {
         };
     }
 
+    function clear() { 
+        guilds[message.guild.id].queue = [];
+        guilds[message.guild.id].queueNames = [];
+        guilds[message.guild.id].isPlaying = false;
+    }
+
     if (mess.startsWith(prefix + "play")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
@@ -137,7 +143,7 @@ if(mess.startsWith(prefix+"stop")) {
     if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
     if (guilds[message.guild.id].voiceChannel)
     { 
-    await clear().then(message.guild.voiceConnection.disconnect())
+    await clear().then(message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`))
     }
 }
 
@@ -184,11 +190,6 @@ function skip_song(message) {
     guilds[message.guild.id].dispatcher.end();
 }
 
-function clear(message) {
-    guilds[message.guild.id].queue = [];
-    guilds[message.guild.id].queueNames = [];
-    guilds[message.guild.id].isPlaying = false;
-}
 
 function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
