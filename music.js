@@ -113,8 +113,13 @@ client.on('message', async function(message) {
                     }
             })
         }
-        message2 += "```";
-        message.channel.send(message2);
+        message.channel.send({
+            embed: {
+                title: `${message.guild.name}'s queue.`,
+                color: 3447003,
+                description: `${message2}`
+            }
+    })
     }
 }
 
@@ -131,14 +136,16 @@ if(mess.startsWith(prefix+"stop")) {
 
 else if (message.content.startsWith(prefix + 'vol')) {
     if (!message.member.voiceChannel) return message.reply(novc);
+    if (guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     if (args > 100) return message.reply('**:headphones: For some health reasons the max vol you can use is ``150``, kthx**');
     if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``150``**");
     guilds[message.guild.id].dispatcher.setVolume(1 * args / 50);   
-    message.channel.sendMessage(`**:loud_sound: Volume:** ${dispatcher.volume*50}`);
+    message.channel.send(`**:loud_sound: Volume:** ${guilds[message.guild.id].dispatcher.volume*50}`);
 }
 
 else if (mess.startsWith(prefix + 'pause')) {
     if (!message.member.voiceChannel) return message.reply(novc);
+    if (guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':pause_button: **Paused**').then(() => {
         guilds[message.guild.id].dispatcher.pause();
     });
@@ -146,6 +153,7 @@ else if (mess.startsWith(prefix + 'pause')) {
 
 else if (mess.startsWith(prefix + 'resume')) {
     if (!message.member.voiceChannel) return message.reply(novc);
+    if (guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':play_pause: **Resuming**').then(() => {
         guilds[message.guild.id].dispatcher.resume();
     });
@@ -186,7 +194,7 @@ function playMusic(id, message) {
             guilds[message.guild.id].skippers = [];
             guilds[message.guild.id].queue.shift();
             guilds[message.guild.id].queueNames.shift();
-            if (guilds[message.guild.id].queue.length === 0) {
+            if (guilds[message.guild.id].queue.length === 0) {  
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
