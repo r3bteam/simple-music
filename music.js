@@ -22,8 +22,8 @@ client.on('message', async function(message) {
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
     const novc = "**<:no:439399928960253964> | You are not in a voice channel.**"
     const yt = "<:MxYT:451042476552355841>"
-    const correct = client.emojis.get("451042988756434964")
-    const nope = client.emojis.get("451043013100044298")
+    const correct = client.emojis.get("451040030635458574")
+    const nope = client.emojis.get("451040031277056001")
     const member = message.member;
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
