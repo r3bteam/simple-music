@@ -108,30 +108,12 @@ client.on('message', async function(message) {
         }
 
     } else if (mess.startsWith(prefix + "queue")) {
-        if(!guilds[message.guild.id].queue) return message.channel.send(`**:x: Nothing playing in this server**`)
-        for (var i = 0; i < guilds[message.guild.id].queueNames.length; i++) {
-            guilds[message.guild.id].queueNames.map(song => console.log(song))
-            var temp = (i + 1) + ": " + guilds[message.guild.id].queueNames[i] + (i === 0 ? "(Current Song)" : "") + "\n";
-            if ((message2 + temp).length <= 2000 - 3) {
-                message2 += temp;
-            } else {
-                message.channel.send({
-                    embed: {
-                        title: `${message.guild.name}'s queue.`,
-                        color: 3447003,
-                        description: `${message2}`
-                    }
-            })
-        }
-        message.channel.send({
-            embed: {
-                title: `${message.guild.name}'s queue.`,
-                color: 3447003,
-                description: `${message2}`
-            }
-    })
+        if(!guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`)
+        return message.channel.send(`
+            **Now playing:** ${guilds[message.guild.id].queueNames[0]}\n
+            ${guilds[message.guild.id].queueNames.map(song => `**-** ${song}`).join('\n')}
+        `)
     }
-}
 
 if(mess.startsWith(prefix+"stop")) {
     if (!message.member.voiceChannel) return message.reply(novc);
