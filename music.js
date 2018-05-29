@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({disableEveryone: true});
 const ytdl = require("ytdl-core");
 const request = require("request");
 const convert = require("hh-mm-ss")
@@ -12,6 +12,9 @@ client.login(process.env.SECERT_KEY);
 var guilds = {};
 client.on('ready', function() {
     console.log("Matrix Premium [Moosik Bot] V0.9");
+});
+client.on('reconnecting', function() {
+client.channels.get()
 });
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -94,35 +97,6 @@ client.on('message', async function(message) {
             message.reply("<:no:439399928960253964> you already voted to skip!");
         }
 
-//      if (mess.startsWith(prefix+"search")) {
-//         try {
-//             var videos = await youtube.searchVideos(searchString, 10);
-//             let index = 0;
-//             msg.channel.send(`
-// __**Song selection:**__
-// ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
-// Please provide a value to select one of the search results ranging from 1-10.
-//             `);
-//             // eslint-disable-next-line max-depth
-//             try {
-//                 var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
-//                     maxMatches: 1,
-//                     time: 10000,
-//                     errors: ['time']
-//                 });
-//             } catch (err) {
-//                 console.error(err);
-//                 return msg.channel.send('No or invalid value entered, cancelling video selection.');
-//             }
-//             const videoIndex = parseInt(response.first().content);
-//             var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-//         } catch (err) {
-//             console.error(err);
-//             return msg.channel.send('🆘 I could not obtain any search results.');
-//         }
-//     }
-//     return handleVideo(video, msg, voiceChannel);
-
     } else if (mess.startsWith(prefix + "queue")) {
         if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`)
         var message2 = "```";
@@ -146,6 +120,7 @@ if(mess.startsWith(prefix+"stop")) {
     if (guilds[message.guild.id].voiceChannel)
     { 
     await clear()
+    message.guild.voiceConnection.disconnect();
     message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
     }
 }
