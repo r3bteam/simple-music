@@ -64,7 +64,7 @@ client.on('message', async function(message) {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
-                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope));
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope));
                         else msg.react(correct)
                         add_to_queue(id, message);
                         message.channel.send(new Discord.RichEmbed()
@@ -88,7 +88,7 @@ client.on('message', async function(message) {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
-                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope))
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope))
                         else msg.react(correct)
                         playMusic(id, message);
                         guilds[message.guild.id].queue.push(id);
