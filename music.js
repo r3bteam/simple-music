@@ -22,8 +22,8 @@ client.on('message', async function(message) {
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
     const novc = "**<:no:439399928960253964> | You are not in a voice channel.**"
     const yt = "<:MxYT:451042476552355841>"
-    const correct = client.emojis.get("451040030635458574")
-    const nope = client.emojis.get("451040031277056001")
+    const correct = client.guilds.get('448425456316973057').emojis.get("451040030635458574")
+    const nope = client.guilds.get('448425456316973057').emojis.get('451040030635458574')
     const member = message.member;
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
@@ -75,17 +75,18 @@ client.on('message', async function(message) {
             })
             } else {
                 isPlaying = true;
-                message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(
+                message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then((msg) => {
                 getID(args, function(id) {
                     guilds[message.guild.id].queue.push(id);
                     playMusic(id, message);
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
-                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`);
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope))
+                        else msg.react(correct)
                         guilds[message.guild.id].queueNames.push(videoInfo.title);
                         message.channel.send(`**Playing :notes: \`\`${videoInfo.title}\`\` - Now!**`);
                     });
-                }))
+                })})
             }
         } else {
             message.reply(novc);
