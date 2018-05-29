@@ -178,8 +178,8 @@ else if (mess.startsWith(prefix + 'join')) {
 else if (mess.startsWith(prefix + 'clear')) {
     if (!message.member.voiceChannel) return message.reply(novc);
    if(guilds[message.guild.id].queueNames.length > 1) {
-    guilds[message.guild.id].queueNames = guilds[message.guild.id].queueNames[0]
-    guilds[message.guild.id].queue = guilds[message.guild.id].queue[0] 
+    guilds[message.guild.id].queueNames.splice(1, guilds[message.guild.id].queueNames.length)
+    guilds[message.guild.id].queue.splice(1, guilds[message.guild.id].queue.length)
     message.channel.send(`:asterisk: Cleared the queue of **${message.guild.name}**`)
    }
 }
