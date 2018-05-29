@@ -178,12 +178,10 @@ else if (mess.startsWith(prefix + 'join')) {
 else if (mess.startsWith(prefix + 'clear')) {
     if (!message.member.voiceChannel) return message.reply(novc);
    if(guilds[message.guild.id].queueNames.length > 1) {
-    guilds[message.guild.id].queueNames = queueNames[0]
-    guilds[message.guild.id].queue = queue[0] 
+    guilds[message.guild.id].queueNames = [queueNames[0]]
+    guilds[message.guild.id].queue = [queue[0]] 
    }
 }
-
-
 });
 
 
