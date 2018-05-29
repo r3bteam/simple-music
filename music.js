@@ -137,9 +137,7 @@ if(mess.startsWith(prefix+"stop")) {
     if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
     if (guilds[message.guild.id].voiceChannel)
     { 
-    await clear().then(
-    message.guild.voiceConnection.disconnect()
-    )
+    await clear().then(message.guild.voiceConnection.disconnect())
     }
 }
 
@@ -186,6 +184,12 @@ function skip_song(message) {
     guilds[message.guild.id].dispatcher.end();
 }
 
+function clear(message) {
+    guilds[message.guild.id].queue = [];
+    guilds[message.guild.id].queueNames = [];
+    guilds[message.guild.id].isPlaying = false;
+}
+
 function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
@@ -213,12 +217,6 @@ function playMusic(id, message) {
             }
         });
     });
-}
-
-function clear(message) {
-    guilds[message.guild.id].queue = [];
-    guilds[message.guild.id].queueNames = [];
-    guilds[message.guild.id].isPlaying = false;
 }
 
 function getID(str, cb) {
