@@ -54,9 +54,9 @@ client.on('message', async function(message) {
                 getID(args, function(id) {
                     add_to_queue(id, message);
                     fetchVideoInfo(id, function(err, videoInfo) {
+                        if (err) throw new Error(err);
                         if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope));
                         else msg.react(correct)
-                        if (err) throw new Error(err);
                         message.channel.send(new Discord.RichEmbed()
                         .setAuthor("Added to queue", message.author.avatarURL)
                         .setTitle(videoInfo.title)
