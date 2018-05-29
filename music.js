@@ -144,6 +144,41 @@ if(mess.startsWith(prefix+"stop")) {
     }
 }
 
+else if (message.content.startsWith(prefix + 'vol')) {
+    return message.channel.send(new Discord.RichEmbed().setDescription("**You must have Premium to use this command!**"))
+    if (!message.member.voiceChannel) return message.reply(novc);
+    if (args > 100) return message.reply(':x: **100**');
+    if (args < 1) return message.reply(":x: **1**");
+    dispatcher.setVolume(1 * args / 50);
+    message.channel.sendMessage(`Volume Updated To: **${dispatcher.volume*50}**`);
+}
+
+else if (mess.startsWith(prefix + 'pause')) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    message.reply(':pause_button: **Paused**').then(() => {
+        dispatcher.pause();
+    });
+}
+
+else if (mess.startsWith(prefix + 'resume')) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    message.reply(':play_pause: **Resuming**').then(() => {
+        dispatcher.resume();
+    });
+}
+
+else if (mess.startsWith(prefix + 'stop')) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    message.reply(':name_badge: **تم الايقاف**');
+    var server = server = servers[message.guild.id];
+    if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
+}
+
+else if (mess.startsWith(prefix + 'join')) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    message.member.voiceChannel.join().then(message.react('✅'));
+}
+
 });
 
 
@@ -177,7 +212,7 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
-                message.guild.voiceChannel.disconnect();
+                message.guild.voiceConnection.disconnect();
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
