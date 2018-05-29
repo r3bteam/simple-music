@@ -101,7 +101,7 @@ client.on('message', async function(message) {
                 message.channel.send("**:fast_forward: Skipped**");
                 if (!guilds[message.guild.id].isPlaying) message.guild.voiceConnection.disconnect();
             } else {
-                message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} has vote to skip current song! **` + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) = "**  more votes to skip! **";
+                message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} has vote to skip current song! **` + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) + "**  more votes to skip! **";
             }
         } else {
             message.reply("<:no:439399928960253964> you already voted to skip!");
@@ -109,11 +109,12 @@ client.on('message', async function(message) {
 
     } else if (mess.startsWith(prefix + "queue")) {
         if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`);
-        guilds[message.guild.id].queueNames.shift();
         return message.channel.send(`
             **Now playing:** ${guilds[message.guild.id].queueNames[0]}\n
-            ${guilds[message.guild.id].queueNames.map(song => `**-** ${song}`).join('\n')}
-        `)
+        `).then(() => {
+            guilds[message.guild.id].queueNames.shift();
+            message.channel.send(`${guilds[message.guild.id].queueNames.map(song => `**-** ${song}`).join('\n')}`)
+        })
     }
 
 if(mess.startsWith(prefix+"stop")) {
