@@ -13,7 +13,7 @@ var guilds = {};
 
 /////////////////////////////////////////////////////////////////////////////////
 
-client.on('message', function(message) {
+client.on('message', async function(message) {
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
     const novc = "**<:no:439399928960253964> | You are not in a voice channel.**"
     const member = message.member;
@@ -134,13 +134,12 @@ client.on('message', function(message) {
 
 if(mess.startsWith(prefix+"stop")) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    message.channel.send('**:mailbox_with_no_mail: Successfully disconnected**');
     if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
     if (guilds[message.guild.id].voiceChannel)
-    { message.guild.voiceConnection.disconnect()
-    guilds[message.guild.id].queue = [];
-    guilds[message.guild.id].queueNames = [];
-    guilds[message.guild.id].isPlaying = false;
+    { 
+    await clear().then(
+    message.guild.voiceConnection.disconnect()
+    )
     }
 }
 
@@ -167,12 +166,6 @@ else if (mess.startsWith(prefix + 'resume')) {
     });
 }
 
-else if (mess.startsWith(prefix + 'stop')) {
-    if (!message.member.voiceChannel) return message.reply(novc);
-    message.reply(':name_badge: **تم الايقاف**');
-    var server = server = servers[message.guild.id];
-    if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
-}
 
 else if (mess.startsWith(prefix + 'join')) {
     if (!message.member.voiceChannel) return message.reply(novc);
@@ -186,7 +179,7 @@ else if (mess.startsWith(prefix + 'join')) {
 
 //
 client.on('ready', function() {
-    console.log("I am ready!");
+    console.log("Matrix Premium [Moosik Bot]");
 });
 
 function skip_song(message) {
@@ -212,7 +205,6 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
-                message.guild.voiceConnection.disconnect();
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
@@ -221,6 +213,12 @@ function playMusic(id, message) {
             }
         });
     });
+}
+
+function clear(message) {
+    guilds[message.guild.id].queue = [];
+    guilds[message.guild.id].queueNames = [];
+    guilds[message.guild.id].isPlaying = false;
 }
 
 function getID(str, cb) {
