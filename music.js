@@ -126,34 +126,36 @@ if(mess.startsWith(prefix+"stop")) {
 }
 
 else if (message.content.startsWith(prefix + 'vol')) {
-    return message.channel.send(new Discord.RichEmbed().setDescription("**You must have Premium to use this command!**"))
     if (!message.member.voiceChannel) return message.reply(novc);
-    if (args > 100) return message.reply(':x: **100**');
-    if (args < 1) return message.reply(":x: **1**");
-    dispatcher.setVolume(1 * args / 50);
-    message.channel.sendMessage(`Volume Updated To: **${dispatcher.volume*50}**`);
+    if (args > 100) return message.reply('**:headphones: For some health reasons the max vol you can use is ``150``, kthx**');
+    if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``150``**");
+    guilds[message.guild.id].dispatcher.setVolume(1 * args / 50);   
+    message.channel.sendMessage(`**:loud_sound: Volume:** ${dispatcher.volume*50}`);
 }
 
 else if (mess.startsWith(prefix + 'pause')) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    message.reply(':pause_button: **Paused**').then(() => {
-        dispatcher.pause();
+    message.channel.send(':pause_button: **Paused**').then(() => {
+        guilds[message.guild.id].dispatcher.pause();
     });
 }
 
 else if (mess.startsWith(prefix + 'resume')) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    message.reply(':play_pause: **Resuming**').then(() => {
-        dispatcher.resume();
+    message.channel.send(':play_pause: **Resuming**').then(() => {
+        guilds[message.guild.id].dispatcher.resume();
     });
 }
 
 
 else if (mess.startsWith(prefix + 'join')) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    message.member.voiceChannel.join().then(message.react('✅'));
+    if(!guilds[message.guild.id].isPlaying) {
+        message.member.voiceChannel.join().then(message.react('✅'));
+    } else {
+        message.channel.send(`<:no:439399928960253964> **Music is being played in another voice channel!**`)
+    }
 }
-
 });
 
 
