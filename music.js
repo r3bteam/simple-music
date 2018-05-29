@@ -13,6 +13,12 @@ client.login(process.env.SECERT_KEY);
 var guilds = {};
 client.on('ready', function() {
     console.log("[Launching...] Matrix Premium Music Bot V0.9");
+    client.guilds.forEach(g=> {
+        g.defaultChannel.send(`\`\`**Disconnecting... ${new Date().toDateString()}\`\` \n
+        نأسف منكم, يتم حالياً صيانة خوادم الموسيقى وسيتم إرجعاها في أقرب وقت..
+        
+        -Matrix Team**`)
+    })
 });
 client.on('reconnecting', function() {
     console.log("[Reconnting...] Matrix Premium Music Bot V0.9");
@@ -40,7 +46,7 @@ client.on('message', async function(message) {
     const nomatch = "**:MxNo: You've to be in the same voice channel!**"
     const yt = "<:MxYT:451042476552355841>"
     const correct = client.guilds.get('448425456316973057').emojis.get("451040030635458574")
-    const nope = client.guilds.get('451040031277056001').emojis.get('451040030635458574')
+    const nope = client.guilds.get('448425456316973057').emojis.get('451040031277056001')
     const member = message.member;
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
