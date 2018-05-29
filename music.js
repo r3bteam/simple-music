@@ -94,7 +94,7 @@ client.on('message', async function(message) {
         if(!message.member.voiceChannel) return message.reply(novc)
         if(member.voiceChannel !== guilds[message.guild.id].voiceChannel) return message.reply(nomatch)
         if(message.member.hasPermission('MANAGE_CHANNELS')) {
-        if (guilds[message.guild.id].queueNames != undefined) {
+        if (guilds[message.guild.id].queueNames[0]) {
         skip_song(message);
         message.channel.send("**:fast_forward: Skipped**");
         } else return message.channel.send(`**:x: Nothing playing in this server**`);
@@ -104,7 +104,7 @@ client.on('message', async function(message) {
             guilds[message.guild.id].skippers.push(message.author.id);
             guilds[message.guild.id].skipReq++;
             if (guilds[message.guild.id].skipReq >= Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2)) {
-                if (guilds[message.guild.id].queueNames != undefined) {
+                if (guilds[message.guild.id].queueNames[0]) {
                 skip_song(message);
                 message.channel.send("**:fast_forward: Skipped**");
                 } else return message.channel.send(`**:x: Nothing playing in this server**`);
