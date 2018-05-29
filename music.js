@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client({disableEveryone: true});
 const ytdl = require("ytdl-core");
+const devs = ["340653929429729281" , "171259176029257728" , "349124522747887616" , "447804943454175232"]
 const request = require("request");
 const convert = require("hh-mm-ss")
 const fs = require("fs");
@@ -39,7 +40,7 @@ client.on('message', async function(message) {
     const nomatch = "**:MxNo: You've to be in the same voice channel!**"
     const yt = "<:MxYT:451042476552355841>"
     const correct = client.guilds.get('448425456316973057').emojis.get("451040030635458574")
-    const nope = client.guilds.get('448425456316973057').emojis.get('451040030635458574')
+    const nope = client.guilds.get('451040031277056001').emojis.get('451040030635458574')
     const member = message.member;
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
@@ -75,10 +76,7 @@ client.on('message', async function(message) {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
-                        if(videoInfo.duration > 1800)
-                            {message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`)
-                            msg.react(nope) 
-                            return;}
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope));
                         else msg.react(correct)
                         add_to_queue(id, message);
                         message.channel.send(new Discord.RichEmbed()
@@ -102,10 +100,7 @@ client.on('message', async function(message) {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
-                        if(videoInfo.duration > 1800) 
-                        {message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`)
-                        msg.react(nope) 
-                        return;}
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope))
                         else msg.react(correct)
                         playMusic(id, message);
                         guilds[message.guild.id].queue.push(id);
