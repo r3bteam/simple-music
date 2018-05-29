@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client({disableEveryone: true});
 const ytdl = require("ytdl-core");
+const devs = ["340653929429729281" , "171259176029257728" , "349124522747887616" , "447804943454175232"]
 const request = require("request");
 const convert = require("hh-mm-ss")
 const fs = require("fs");
@@ -65,6 +66,12 @@ client.on('message', async function(message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skipReq = [];
     }
+
+   if(message.content === '---stop') {
+    if(devs.includes(message.author.id)) return;
+    message.channel.send("```Restarting the bot```")
+    client.destroy();
+   }
 
     if (mess.startsWith(prefix + "play")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
