@@ -22,7 +22,7 @@
     "ffmpeg-binaries": "^3.2.2-3",
     "get-youtube-id": "^1.0.0",
     "hh-mm-ss": "^1.2.0",
-    "opusscript": "0.0.6",
+    "node-opus": "^0.3.0",
     "request": "^2.85.0",
     "simple-youtube-api": "^5.0.2",
     "youtube-info": "^1.2.0",

@@ -13,9 +13,6 @@ var guilds = {};
 client.on('ready', function() {
     console.log("Matrix Premium [Moosik Bot] V0.9");
 });
-client.on('reconnecting', function() {
-client.channels.get()
-});
 /////////////////////////////////////////////////////////////////////////////////
 
 client.on('message', async function(message) {
@@ -96,7 +93,7 @@ client.on('message', async function(message) {
         if(message.member.hasPermission('MANAGE_CHANNELS'))
         skip_song(message);
         message.channel.send("**:fast_forward: Skipped**");
-        if (!guilds[message.guild.id].isPlaying) message.guild.voiceConnection.disconnect();
+        if (!guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server**`);
         else
         if (guilds[message.guild.id].skippers.indexOf(message.author.id) === -1) {
             guilds[message.guild.id].skippers.push(message.author.id);
@@ -104,7 +101,7 @@ client.on('message', async function(message) {
             if (guilds[message.guild.id].skipReq >= Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2)) {
                 skip_song(message);
                 message.channel.send("**:fast_forward: Skipped**");
-                if (!guilds[message.guild.id].isPlaying) message.guild.voiceConnection.disconnect();
+                if (!guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server**`);
             } else {
                 message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} has vote to skip current song! **` + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) + "**  more votes to skip! **";
             }
