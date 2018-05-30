@@ -143,6 +143,7 @@ if(mess.startsWith(prefix+"stop")) {
     { 
     await clear()
     message.guild.voiceConnection.disconnect();
+    guilds[message.guild.id].dispatcher.destroy()
     message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
     }
 }
@@ -223,6 +224,7 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
+                guilds[message.guild.id].dispatcher.destroy()
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
