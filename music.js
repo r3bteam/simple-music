@@ -150,16 +150,16 @@ if(mess.startsWith(prefix+"stop")) {
 else if (message.content.startsWith(prefix + 'vol')) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
-    if(!args) return message.channel.send(`**:loud_sound: Current Volume:** ${guilds[message.guild.id].dispatcher.volume*50}`)
+    if(!args) return message.channel.send(`**:loud_sound: Current Volume:** ${guilds[message.guild.id].dispatcher.volume}`)
     if (args > 150) return message.reply('**:headphones: For some health reasons the max vol you can use is ``150``, kthx**');
     if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``150``**");
-    guilds[message.guild.id].dispatcher.setVolume(1 * args / 50);   
-    message.channel.send(`**:loud_sound: Volume:** ${guilds[message.guild.id].dispatcher.volume*50}`);
+    guilds[message.guild.id].dispatcher.setVolumeLogarithmic(args / 5);
+    message.channel.send(`**:loud_sound: Volume:** ${args}`);
 }
 
 else if (mess.startsWith(prefix + 'pause')) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if (guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
+    if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':pause_button: **Paused**').then(() => {
         guilds[message.guild.id].dispatcher.pause();
     });
@@ -167,7 +167,7 @@ else if (mess.startsWith(prefix + 'pause')) {
 
 else if (mess.startsWith(prefix + 'resume')) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if (guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
+    if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':play_pause: **Resuming**').then(() => {
         guilds[message.guild.id].dispatcher.resume();
     });
@@ -176,7 +176,7 @@ else if (mess.startsWith(prefix + 'resume')) {
 
 else if (mess.startsWith(prefix + 'join')) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if(!guilds[message.guild.id].isPlaying || guilds[message.guild.id].queueNames.length <= 0) {
+    if(!guilds[message.guild.id].isPlaying && guilds[message.guild.id].queueNames.length <= 0) {
         message.member.voiceChannel.join().then(message.react(correct));
         message.channel.send(`**:page_facing_up: Queue moved to \`\`${message.member.voiceChannel.name}\`\`**`)
     } else {
