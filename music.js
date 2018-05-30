@@ -69,7 +69,7 @@ client.on('message', async function(message) {
                         add_to_queue(id, message);
                         message.channel.send(new Discord.RichEmbed()
                         .setAuthor("Added to queue", message.author.avatarURL)
-                        .setTitle(videoInfo.title)
+                        .setDescription(`**${videoInfo.title}**`)
                         .setURL(videoInfo.url)
                         .addField("Channel", videoInfo.owner, true)
                         .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
