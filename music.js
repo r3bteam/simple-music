@@ -215,7 +215,7 @@ function playMusic(id, message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
 
-        guilds[message.guild.id].dispatcher = connection.playStream(stream);
+        guilds[message.guild.id].dispatcher = connection.playStream(stream, {seek: 0, volume: 1, bitrate: 128000});
         guilds[message.guild.id].dispatcher.on('end', function() {
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
