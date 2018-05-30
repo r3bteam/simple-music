@@ -150,12 +150,12 @@ if(mess.startsWith(prefix+"stop")) {
 else if (message.content.startsWith(prefix + 'vol')) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
-    if(!args) return message.channel.send(`**:loud_sound: Current Volume:** ${guilds[message.guild.id].dispatcher.volume*50}`)
+    if(!args) return message.channel.send(`**:loud_sound: Current Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`)
     if(isNaN(args)) return message.channel.send(`**:x: Volume must be a number -_-**`)
     if (args > 150) return message.reply('**:headphones: For some health reasons the max vol you can use is ``150``, kthx**');
     if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``150``**");
-    guilds[message.guild.id].dispatcher.setVolume(1 * args / 50)
-    message.channel.send(`**:loud_sound: Volume:** ${guilds[message.guild.id].dispatcher.volume*50}`);
+    guilds[message.guild.id].dispatcher.setVolume((0.01 * parseInt(args)))
+    message.channel.send(`**:loud_sound: Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`);
 }
 
 else if (mess.startsWith(prefix + 'pause')) {
@@ -215,7 +215,7 @@ function playMusic(id, message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
 
-        guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: 128000});
+        guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: 128000, volume: 1});
         guilds[message.guild.id].dispatcher.on('end', function() {
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
