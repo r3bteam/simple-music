@@ -232,7 +232,9 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
-                if(guilds[message.guild.id].voiceChannel != null) return message.channel.send(`**:stop_button: Queue concluded.**`);
+                setTimeout(function() {
+                if(guilds[message.guild.id].voiceChannel != null) return message.channel.send(`**:stop_button: Queue concluded.**`)
+            }, 2000)
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
