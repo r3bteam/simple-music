@@ -83,7 +83,6 @@ client.on('message', async function(message) {
                 })
             })
             } else {
-                isPlaying = true;
                 message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(() => {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
@@ -91,6 +90,7 @@ client.on('message', async function(message) {
                         if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope))
                         else message.react(correct)
                         playMusic(id, message);
+                        guilds[message.guild.id].isPlaying = true;
                         guilds[message.guild.id].queue.push(id);
                         guilds[message.guild.id].queueNames.push(videoInfo.title);
                         message.channel.send(`**Playing :notes: \`\`${videoInfo.title}\`\` - Now!**`);
