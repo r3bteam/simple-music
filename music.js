@@ -64,8 +64,8 @@ client.on('message', async function(message) {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
-                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope));
-                        else msg.react(correct)
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
+                        else message.react(correct)
                         add_to_queue(id, message);
                         message.channel.send(new Discord.RichEmbed()
                         .setAuthor("Added to queue", message.author.avatarURL)
@@ -84,12 +84,12 @@ client.on('message', async function(message) {
             })
             } else {
                 isPlaying = true;
-                message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then((msg) => {
+                message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(() => {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
-                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(msg.react(nope))
-                        else msg.react(correct)
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope))
+                        else message.react(correct)
                         playMusic(id, message);
                         guilds[message.guild.id].queue.push(id);
                         guilds[message.guild.id].queueNames.push(videoInfo.title);
@@ -143,7 +143,6 @@ if(mess.startsWith(prefix+"stop")) {
     { 
     await clear()
     message.guild.voiceConnection.disconnect();
-    guilds[message.guild.id].dispatcher.destroy()
     message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
     }
 }
@@ -224,7 +223,6 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
-                guilds[message.guild.id].dispatcher.destroy()
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
