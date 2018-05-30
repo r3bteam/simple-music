@@ -267,25 +267,3 @@ function search_video(query, callback) {
 function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
-
-
-client.on('message', message =>  {
-    const prefix = "حط البرفكس حقك هنا"
-    if (message.content.startsWith(prefix+'rmc'))
-        {
-            var members = []
-            let evidence = message.content.split(" ").slice(1,2).join(" ")
-            let reason = message.content.split(" ").slice(2).join(" ")
-            if (!reason) return message.reply(`**${prefix}apply [تقديمك] [رابط مقطعك]**`)
-            if(!evidence.match(linkreg)) return message.channel.send(`**${prefix}apply [تقديمك] [رابط مقطعك]**`)
-            if(!evidence) return message.reply(`راجاً ضع رابط مقطع لتقديمك`)
-            var embed = new Discord.RichEmbed()
-                .setTitle(`تقديم من ${message.author.username}`)
-                .addField(`التقديم`, "**"+ reason + "`*")
-                .addField(`رابط المقطع`, evidence)
-                .setColor(`GREEN`)
-                client.channels.get("حط ايدي الشنل هنا").send(embed)
-                members.push(message.author.id);
-                message.channel.send(`${mentions} تم تقديم طلبك...`)
-            }  
-    });
