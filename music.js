@@ -60,7 +60,7 @@ client.on('message', async function(message) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: â¯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
-                message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then((msg)=> {
+                message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
@@ -156,10 +156,9 @@ else if (message.content.startsWith(prefix + 'vol') || mess.startsWith(prefix+"Ø
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     if(!args) return message.channel.send(`**:loud_sound: Current Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`)
     if(isNaN(args)) return message.channel.send(`**:x: Volume must be a number -_-**`)
-    if (args > 1000) return message.reply('**:headphones: For some health reasons the max vol you can use is ``1000``, kthx**');
-    if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``150``**");
-    // guilds[message.guild.id].dispatcher.setVolume((0.01 * parseInt(args)))
-    guilds[message.guild.id].dispatcher.setVolumeLogarithmic(args / 5);
+    if (args > 200) return message.reply('**:headphones: For some health reasons the max vol you can use is ``200``, kthx**');
+    if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``200``**");
+    guilds[message.guild.id].dispatcher.setVolume((0.01 * parseInt(args)))
     message.channel.send(`**:loud_sound: Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`);
 }
 
@@ -226,11 +225,12 @@ function playMusic(id, message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
         guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: 1});
-        guilds[message.guild.id].dispatcher.on('end', function() {
+        guilds[message.guild.id].dispatcher.on('end', function() {                                                                                                
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
             guilds[message.guild.id].queue.shift();
             guilds[message.guild.id].queueNames.shift();
+            guilds[message.guild.id].dispatcher.destroy();
             if (guilds[message.guild.id].queue.length === 0) {  
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
