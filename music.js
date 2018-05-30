@@ -105,8 +105,8 @@ client.on('message', async function(message) {
         if(!message.member.voiceChannel) return message.reply(novc)
         if(message.member.hasPermission('MANAGE_CHANNELS')) {
         if (guilds[message.guild.id].queueNames[0]) {
-        message.channel.send("**:fast_forward: Skipped**");
-        skip_song(message);
+            message.channel.send(`**:fast_forward: Skipped** ${guilds[message.guild.id].queueNames[0]}`);
+            skip_song(message);
         } else return message.channel.send(`**:x: Nothing playing in this server**`);
         }
         else
@@ -115,7 +115,7 @@ client.on('message', async function(message) {
             guilds[message.guild.id].skipReq++;
             if (guilds[message.guild.id].skipReq >= Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2)) {
                 if (guilds[message.guild.id].queueNames[0]) {
-                message.channel.send("**:fast_forward: Skipped**");
+                message.channel.send(`**:fast_forward: Skipped** ${guilds[message.guild.id].queueNames[0]}`);
                 skip_song(message);
                 } else return message.channel.send(`**:x: Nothing playing in this server**`);
             } else {
@@ -189,9 +189,16 @@ else if (mess.startsWith(prefix + 'join') || mess.startsWith(prefix+"ادخل"))
 else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) {
     if (!message.member.voiceChannel) return message.reply(novc);
    if(guilds[message.guild.id].queueNames.length > 1) {
+    if(!args || isNan(args)) {
     guilds[message.guild.id].queueNames.splice(1, guilds[message.guild.id].queueNames.length)
     guilds[message.guild.id].queue.splice(1, guilds[message.guild.id].queue.length)
     message.channel.send(`:asterisk: Cleared the queue of **${message.guild.name}**`)
+    } else if(args) {
+        guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
+        guilds[message.guild.id].queue.splice(parseInt(args), 1)
+        return message.channel.send(`:wastebasket: Removed **${guilds[message.guild.id].queueNames[parseInt(args)]}** from the queue.`);}
+   } else {
+       message.channel.send(`<:MxNo:449703922190385153> There's only 1 item in the queue. use \`\`${prefix}skip\`\` instead! `)
    }
 }
 
@@ -225,7 +232,7 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
-                message.channel.send(`**:stop_button: Queue concluded.**`)
+                if(guilds[message.guild.id].voiceChannel != null) return message.channel.send(`**:stop_button: Queue concluded.**`);
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
