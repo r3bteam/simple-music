@@ -142,8 +142,10 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
     if (guilds[message.guild.id].voiceChannel)
     { 
     await clear()
+    setTimeout(function(){
     message.guild.voiceConnection.disconnect();
     message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
+  }, 1000)
     }
 }
 
