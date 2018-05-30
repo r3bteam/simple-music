@@ -17,9 +17,7 @@
   },
   "homepage": "https://github.com/Abady321x123/simple-music#readme",
   "dependencies": {
-    "convert-seconds": "^1.0.1",
     "discord.js": "^11.3.2",
-    "ffmpeg-binaries": "^3.2.2-3",
     "get-youtube-id": "^1.0.0",
     "hh-mm-ss": "^1.2.0",
     "node-opus": "^0.3.0",
