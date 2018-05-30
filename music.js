@@ -158,7 +158,8 @@ else if (message.content.startsWith(prefix + 'vol') || mess.startsWith(prefix+"Ø
     if(isNaN(args)) return message.channel.send(`**:x: Volume must be a number -_-**`)
     if (args > 1000) return message.reply('**:headphones: For some health reasons the max vol you can use is ``1000``, kthx**');
     if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``150``**");
-    guilds[message.guild.id].dispatcher.setVolume((0.01 * parseInt(args)))
+    // guilds[message.guild.id].dispatcher.setVolume((0.01 * parseInt(args)))
+    guilds[message.guild.id].dispatcher.setVolumeLogarithmic(args / 5);
     message.channel.send(`**:loud_sound: Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`);
 }
 
