@@ -197,7 +197,6 @@ else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) 
         const removedsong = guilds[message.guild.id].queueNames[parseInt(args)]
         guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
         guilds[message.guild.id].queue.splice(parseInt(args), 1)
-        console.log(guilds[message.guild.id].queue)
         return message.channel.send(`:wastebasket: Removed **${removedsong}** from the queue.`);}
    } else {
        message.channel.send(`<:MxNo:449703922190385153> There's only 1 item in the queue. use \`\`${prefix}skip\`\` instead! `)
