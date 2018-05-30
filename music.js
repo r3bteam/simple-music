@@ -56,7 +56,7 @@ client.on('message', async function(message) {
     }
 
 
-    if (mess.startsWith(prefix + "play")) {
+    if (mess.startsWith(prefix + "play") || mess.startsWith(prefix+"شغل")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
@@ -101,7 +101,7 @@ client.on('message', async function(message) {
             message.reply(novc);
         }
 
-    } else if (mess.startsWith(prefix + "skip")) {
+    } else if (mess.startsWith(prefix + "skip") || mess.startsWith(prefix+"عدي")) {
         if(!message.member.voiceChannel) return message.reply(novc)
         if(message.member.hasPermission('MANAGE_CHANNELS')) {
         if (guilds[message.guild.id].queueNames[0]) {
@@ -125,7 +125,7 @@ client.on('message', async function(message) {
             message.reply("<:no:439399928960253964> you already voted to skip!");
         }
 
-    } else if (mess.startsWith(prefix + "queue")) {
+    } else if (mess.startsWith(prefix + "queue") || mess.startsWith(prefix+"قائمة")) {
         if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`);
         return message.channel.send(`
             **Now playing:** ${guilds[message.guild.id].queueNames[0]}\n
@@ -136,7 +136,7 @@ client.on('message', async function(message) {
         })
     }
 
-if(mess.startsWith(prefix+"stop")) {
+if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
     if (guilds[message.guild.id].voiceChannel)
@@ -147,7 +147,7 @@ if(mess.startsWith(prefix+"stop")) {
     }
 }
 
-else if (message.content.startsWith(prefix + 'vol')) {
+else if (message.content.startsWith(prefix + 'vol') || mess.startsWith(prefix+"صوت")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     if(!args) return message.channel.send(`**:loud_sound: Current Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`)
@@ -159,7 +159,7 @@ else if (message.content.startsWith(prefix + 'vol')) {
 }
 
 
-else if (mess.startsWith(prefix + 'pause')) {
+else if (mess.startsWith(prefix + 'pause') || mess.startsWith(prefix+"وقف")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':pause_button: **Paused**').then(() => {
@@ -167,7 +167,7 @@ else if (mess.startsWith(prefix + 'pause')) {
     });
 }
 
-else if (mess.startsWith(prefix + 'resume')) {
+else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':play_pause: **Resuming**').then(() => {
@@ -176,7 +176,7 @@ else if (mess.startsWith(prefix + 'resume')) {
 }
 
 
-else if (mess.startsWith(prefix + 'join')) {
+else if (mess.startsWith(prefix + 'join') || mess.startsWith(prefix+"ادخل")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if(!guilds[message.guild.id].isPlaying && guilds[message.guild.id].queueNames.length <= 0) {
         message.member.voiceChannel.join().then(message.react(correct));
@@ -186,7 +186,7 @@ else if (mess.startsWith(prefix + 'join')) {
     }
 }
 
-else if (mess.startsWith(prefix + 'clear')) {
+else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) {
     if (!message.member.voiceChannel) return message.reply(novc);
    if(guilds[message.guild.id].queueNames.length > 1) {
     guilds[message.guild.id].queueNames.splice(1, guilds[message.guild.id].queueNames.length)
@@ -225,6 +225,7 @@ function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
+                message.channel.send(`**:stop_button: Queue concluded.**`)
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
