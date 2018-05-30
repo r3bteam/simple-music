@@ -127,13 +127,13 @@ client.on('message', async function(message) {
 
     } else if (mess.startsWith(prefix + "queue") || mess.startsWith(prefix+"قائمة")) {
         if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`);
-        if(guilds[message.guild.id].queueNames.length = 1) return message.channel.send('', {embed: {
-        description: `__Now Playing:\n**${guilds[message.guild.id].queueNames[0]}**`,
+        if(guilds[message.guild.id].queueNames[1]) return message.channel.send('', {embed: {
+        description: `__Now Playing:__\n**${guilds[message.guild.id].queueNames[0]}**`,
         }}) 
         else {
             let i = 0
             return message.channel.send('', {embed: {
-                description: `__Now Playing:\n**${guilds[message.guild.id].queueNames[0]}**\n\n :arrow_down: __Up Next__  :arrow_down:\n${guilds[message.guild.id].queueNames.slice(1).map(song => `**\`\`${i = i++}.\`\`** ${song}`).join('\n')}`,
+                description: `__Now Playing:__\n**${guilds[message.guild.id].queueNames[0]}**\n\n :arrow_down: __Up Next__  :arrow_down:\n${guilds[message.guild.id].queueNames.slice(1).map(song => `**\`\`${i = i++}.\`\`** ${song}`).join('\n')}`,
                 footer: {
                     text: `**Total items in queue: ${guilds[message.guild.id].queueNames.length}**`
                 }
