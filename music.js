@@ -142,10 +142,8 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
     if (guilds[message.guild.id].voiceChannel)
     { 
     await clear()
-    setTimeout(function(){
     message.guild.voiceConnection.disconnect();
     message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
-  }, 1000)
     }
 }
 
@@ -241,6 +239,7 @@ function playMusic(id, message) {
             }, 1000)
             } else {
                 setTimeout(function() {
+                    if(!guilds[message.guild.id].queueNames || guilds[message.guild.id].queueNames[0] == undefined) return;
                     playMusic(guilds[message.guild.id].queue[0], message);
                    message.channel.send(`**Playing :notes: \`\`${guilds[message.guild.id].queueNames[0]}\`\` - Now!**`)
                 }, 500);
