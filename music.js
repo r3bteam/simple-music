@@ -105,8 +105,8 @@ client.on('message', async function(message) {
         if(!message.member.voiceChannel) return message.reply(novc)
         if(message.member.hasPermission('MANAGE_CHANNELS')) {
         if (guilds[message.guild.id].queueNames[0]) {
-        skip_song(message);
         message.channel.send("**:fast_forward: Skipped**");
+        skip_song(message);
         } else return message.channel.send(`**:x: Nothing playing in this server**`);
         }
         else
@@ -115,8 +115,8 @@ client.on('message', async function(message) {
             guilds[message.guild.id].skipReq++;
             if (guilds[message.guild.id].skipReq >= Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2)) {
                 if (guilds[message.guild.id].queueNames[0]) {
-                skip_song(message);
                 message.channel.send("**:fast_forward: Skipped**");
+                skip_song(message);
                 } else return message.channel.send(`**:x: Nothing playing in this server**`);
             } else {
                 message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} has vote to skip current song! **` + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) + "**  more votes to skip! **";
