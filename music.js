@@ -69,7 +69,7 @@ client.on('message', async function(message) {
                         add_to_queue(id, message);
                         message.channel.send(new Discord.RichEmbed()
                         .setAuthor("Added to queue", message.author.avatarURL)
-                        .setTitle(`**${videoInfo.title}**`)
+                        .setTitle(videoInfo.title)
                         .setURL(videoInfo.url)
                         .addField("Channel", videoInfo.owner, true)
                         .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
@@ -127,13 +127,24 @@ client.on('message', async function(message) {
 
     } else if (mess.startsWith(prefix + "queue") || mess.startsWith(prefix+"قائمة")) {
         if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`);
-        return message.channel.send(`
-            **Now playing:** ${guilds[message.guild.id].queueNames[0]}\n
-        `).then(() => {
-            if(guilds[message.guild.id].queueNames.length > 1) {
-            message.channel.send(`${guilds[message.guild.id].queueNames.slice(1).map(song => `**-** ${song}`).join('\n')}`)
-            } else return;
-        })
+        if(guilds[message.guild.id].queueNames.length = 1) return message.channel.send('', {embed: {
+        description: `__Now Playing:\n**${guilds[message.guild.id].queueNames[0]}**`,
+        color: "RANDOM"
+        }}) 
+        else {
+            let i = 0
+            return message.channel.send('', {embed: {
+                description: `__Now Playing:\n**${guilds[message.guild.id].queueNames[0]}**\n\n :arrow_down: __Up Next__  :arrow_down:\n${guilds[message.guild.id].queueNames.slice(1).map(song => `**\`\`${i = i++}.\`\`** ${song}`).join('\n')}`,
+                color: "RANDOM",
+                footer: {
+                    text: `**Total items in queue: ${guilds[message.guild.id].queueNames.length}**`
+                }
+                }}) 
+        }
+        //     // if(guilds[message.guild.id].queueNames.length > 1) {
+        //     // message.channel.send(`${guilds[message.guild.id].queueNames.slice(1).map(song => `**-** ${song}`).join('\n')}`)
+        //     // } else return;
+        // })
     }
 
 if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
@@ -202,10 +213,7 @@ else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) 
        message.channel.send(`<:MxNo:449703922190385153> There's only 1 item in the queue. use \`\`${prefix}skip\`\` instead! `)
    }
 }
-
-
 });
-
 
 
 
