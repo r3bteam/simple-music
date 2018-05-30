@@ -152,11 +152,12 @@ else if (message.content.startsWith(prefix + 'vol')) {
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     if(!args) return message.channel.send(`**:loud_sound: Current Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`)
     if(isNaN(args)) return message.channel.send(`**:x: Volume must be a number -_-**`)
-    if (args > 150) return message.reply('**:headphones: For some health reasons the max vol you can use is ``150``, kthx**');
+    if (args > 200) return message.reply('**:headphones: For some health reasons the max vol you can use is ``200``, kthx**');
     if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``150``**");
     guilds[message.guild.id].dispatcher.setVolume((0.01 * parseInt(args)))
     message.channel.send(`**:loud_sound: Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`);
 }
+
 
 else if (mess.startsWith(prefix + 'pause')) {
     if (!message.member.voiceChannel) return message.reply(novc);
@@ -215,7 +216,7 @@ function playMusic(id, message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
 
-        guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: 128000, volume: 1});
+        guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: 128000, volume: guilds[message.guild.id].dispatcher.volume || 1});
         guilds[message.guild.id].dispatcher.on('end', function() {
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
@@ -266,3 +267,25 @@ function search_video(query, callback) {
 function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
+
+
+client.on('message', message =>  {
+    const prefix = "حط البرفكس حقك هنا"
+    if (message.content.startsWith(prefix+'rmc'))
+        {
+            var members = []
+            let evidence = message.content.split(" ").slice(1,2).join(" ")
+            let reason = message.content.split(" ").slice(2).join(" ")
+            if (!reason) return message.reply(`**${prefix}apply [تقديمك] [رابط مقطعك]**`)
+            if(!evidence.match(linkreg)) return message.channel.send(`**${prefix}apply [تقديمك] [رابط مقطعك]**`)
+            if(!evidence) return message.reply(`راجاً ضع رابط مقطع لتقديمك`)
+            var embed = new Discord.RichEmbed()
+                .setTitle(`تقديم من ${message.author.username}`)
+                .addField(`التقديم`, "**"+ reason + "`*")
+                .addField(`رابط المقطع`, evidence)
+                .setColor(`GREEN`)
+                client.channels.get("حط ايدي الشنل هنا").send(embed)
+                members.push(message.author.id);
+                message.channel.send(`${mentions} تم تقديم طلبك...`)
+            }  
+    });
