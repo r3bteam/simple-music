@@ -194,9 +194,10 @@ else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) 
     guilds[message.guild.id].queue.splice(1, guilds[message.guild.id].queue.length)
     message.channel.send(`:asterisk: Cleared the queue of **${message.guild.name}**`)
     } else if(args) {
+        const removedsong = guilds[message.guild.id].queueNames[parseInt(args)]
         guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
         guilds[message.guild.id].queue.splice(parseInt(args), 1)
-        return message.channel.send(`:wastebasket: Removed **${guilds[message.guild.id].queueNames[parseInt(args)]}** from the queue.`);}
+        return message.channel.send(`:wastebasket: Removed **${removedsong}** from the queue.`);}
    } else {
        message.channel.send(`<:MxNo:449703922190385153> There's only 1 item in the queue. use \`\`${prefix}skip\`\` instead! `)
    }
@@ -234,7 +235,7 @@ function playMusic(id, message) {
                 guilds[message.guild.id].isPlaying = false;
                 setTimeout(function() {
                 if(guilds[message.guild.id].voiceChannel != null) return message.channel.send(`**:stop_button: Queue concluded.**`)
-            }, 2000)
+            }, 1000)
             } else {
                 setTimeout(function() {
                     playMusic(guilds[message.guild.id].queue[0], message);
