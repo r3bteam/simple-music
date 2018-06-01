@@ -164,9 +164,9 @@ if(message.content.startsWith(prefix+"search")) {
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
 
 
-    message.channel.send(`**<:MxYT:451042476552355841> Searchs for \`\`${args}\`\`**:\n\n${searchs.map(song => `\`\`${++index}\`\` **${song.title}**`).join('\n\n')}
-
-
+    message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n
+    
+    ${new Discord.RichEmbed() .setDescription(searchs.map(song => `\`\`${++index}\`\` **${song.title}**`).join('\n\n')) .setColor('RED')}
     
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
