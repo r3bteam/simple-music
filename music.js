@@ -171,7 +171,7 @@ if(message.content.startsWith(prefix+"search")) {
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
 try {
-var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 && msg2.author.id === message.author.id, {
+var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 || msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
     maxMatches: 1,
     time: 30000,
     errors: ['time'],
@@ -179,11 +179,12 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 } catch (error) {
 return message.channel.send(`**:x: Timeout**`) 
 }
+if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink**`)
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 const videoIndex = parseInt(response.first().content)
 const id = searchs[videoIndex - 1].id;
 console.log(id)
-fetchVideoInfo(id, function(err, videoInfo) {
+fetchVideoInfo(`${id}`, function(err, videoInfo) {
 if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
 else message.react(correct)
 playMusic(id, message);
@@ -193,7 +194,7 @@ guilds[message.guild.id].queueNames.push(searchs[videoIndex - 1].title);
 message.channel.send(`**Playing :notes: \`\`${search[videoIndex - 1].title}\`\` - Now!**`);
 });
 } else {
-        fetchVideoInfo(id, function(err, videoInfo) {
+        fetchVideoInfo(`${id}`, function(err, videoInfo) {
             if (err) throw new Error(err);
             if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
             else message.react(correct)
