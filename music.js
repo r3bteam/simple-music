@@ -171,7 +171,7 @@ if(message.content.startsWith(prefix+"search")) {
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
 try {
-var response = await message.channel.awaitMessages(msg2 => msg2.content === 'cancel' || msg2.content > 0 && msg2.contnent < 11 && msg2.author.id === message.author.id, {
+var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.contnent < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
     maxMatches: 1,
     time: 30000,
     errors: ['time'],
