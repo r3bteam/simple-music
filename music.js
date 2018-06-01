@@ -23,7 +23,7 @@ client.on('disconnect', function() {
 });
 /////////////////////////////////////////////////////////////////////////////////
 
-client.on('message', async function(message) {
+client.on('message', function(message) {
     if(message.author.bot) return;
     if(!message.channel.guild) return;
     //
@@ -150,7 +150,8 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
     if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
     if (guilds[message.guild.id].voiceChannel)
     { 
-    await clear()
+    //await
+     clear()
     message.guild.voiceConnection.disconnect();
     message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
     }
@@ -159,7 +160,7 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
 if(message.content.startsWith(prefix+"search")) {
     const simpleytapi = require('simple-youtube-api')
     const youtube = new simpleytapi(yt_api_key)
-    const searchs = await youtube.searchVideos(args, 10)
+    const searchs = youtube.searchVideos(args, 10)
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
 
@@ -171,7 +172,7 @@ if(message.content.startsWith(prefix+"search")) {
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
 try {
-var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
+var response = message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
     maxMatches: 1,
     time: 30000,
     errors: ['time'],
@@ -181,7 +182,7 @@ return message.channel.send(`**:x: Timeout**`)
 }
 if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
 const videoIndex = parseInt(response.first().content)
-const id = await searchs[videoIndex - 1].id;
+const id = searchs[videoIndex - 1].id;
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 fetchVideoInfo(id, function(err, videoInfo) {
 if (err) throw new Error(err);
