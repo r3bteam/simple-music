@@ -43,6 +43,7 @@ client.on('message', async function(message) {
             isPlaying: false,
             dispatcher: null,
             voiceChannel: null,
+            volume: 1,
             skipReq: 0,
             skippers: [],
         };
@@ -162,6 +163,7 @@ else if (message.content.startsWith(prefix + 'vol') || mess.startsWith(prefix+"Ø
     if (args > 200) return message.reply('**:headphones: For some health reasons the max vol you can use is ``200``, kthx**');
     if (args < 1) return message.reply("**:headphones: you can set volume from ``1`` to ``200``**");
     guilds[message.guild.id].dispatcher.setVolume((0.01 * parseInt(args)))
+    guilds[message.guild.id].volume = 0.01 * parseInt(args)
     message.channel.send(`**:loud_sound: Volume:** ${guilds[message.guild.id].dispatcher.volume*100}`);
 }
 
@@ -227,7 +229,7 @@ function playMusic(id, message) {
         });
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
-        guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: 1});
+        guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: guilds[message.guild.id].volume});
         guilds[message.guild.id].dispatcher.on('end', function() {                                                                                                
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
@@ -283,3 +285,12 @@ function search_video(query, callback) {
 function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
+
+
+client.on('message', async message => {
+if(message.content.startsWith(prefix+"system")) {
+await message.channel.send(`**The new system..**`)
+message.channel.awaitMessages(msg => {msg.author.id === message.author.id && msg.content === "confirm"}, {time: 150000, max: 1});
+return message.channel.send(`**Alrighty**`)
+}
+})
