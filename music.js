@@ -164,19 +164,16 @@ if(message.content.startsWith(prefix+"search")) {
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
 
 
-    message.channel.send(`**<:MxYT:451042476552355841> Searchs for \`\`${args}\`\`**:\n\n\n${searchs.map(song => `\`\`${++index}\`\`**${song.title}**`).join('\n')}
-
-
+    message.channel.send(`**<:MxYT:451042476552355841> Searchs for \`\`${args}\`\`**:\n\n${searchs.map(song => `\`\`${++index}\`\` **${song.title}**`).join('\n\n')}
 
 
     
-
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
 try {
 var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 && msg2.content === 'cancel' && msg2.author.id === message.author.id, {
     maxMatches: 1,
-    time: 15000,
+    time: 30000,
     errors: ['time'],
 });
 } catch (error) {
