@@ -162,8 +162,11 @@ if(message.content.startsWith(prefix+"search")) {
     const searchs = await youtube.searchVideos(args, 10)
     let index = 0
 
-    message.channel.send(` 
-    ${searchs.map(song => `**\`\`${++index}\`\`** ${song.title}`).join('\n')}
+    message.channel.send(`**Searchs for \`\`${args}\`\`**:
+
+    ${searchs.map(song => `**\`\`${++index}\`\`** ${song.title} **[${song.duration}]**`).join('\n')}
+
+    **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
 try {
 var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 && msg2.author.id === message.author.id, {
