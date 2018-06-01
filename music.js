@@ -288,12 +288,13 @@ function isYoutube(str) {
 
 
 
-client.on('message',async function(message) {
+client.on('message',async function(message)
+ {
 
     if(message.content.startsWith(prefix+"roles")) {
         let roles = message.guild.roles
         await roles
-        let i
+        let i = 0
         roles = roles.map(r => `\`\`${i = i+1}\`\` ${r}`).join('\n');
         message.channel.send(roles)
     }
