@@ -8,6 +8,7 @@ const fs = require("fs");
 const getYouTubeID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
 const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4"
+const simpleytapi = require('simple-youtube-api')
 const prefix = "m-";
 client.login(process.env.SECERT_KEY);
 var guilds = {};
@@ -157,8 +158,7 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
 }
 
 if(message.content.startsWith(prefix+"search")) {
-    const simpleytapi = await require('simple-youtube-api')
-    const youtube = await new simpleytapi(yt_api_key)
+    const youtube = new simpleytapi(yt_api_key)
     const searchs = youtube.searchVideos(args, 10)
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`);
