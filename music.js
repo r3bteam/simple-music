@@ -171,7 +171,7 @@ if(message.content.startsWith(prefix+"search")) {
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
 try {
-var response = await message.channel.awaitMessages(msg2.content > 0 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
+var response = await message.channel.awaitMessages(msg2.content > 0 && msg2.content < 11 && msg2.author.id === message.author.id, {
     maxMatches: 1,
     time: 30000,
     errors: ['time'],
@@ -179,8 +179,7 @@ var response = await message.channel.awaitMessages(msg2.content > 0 || msg2.cont
 } catch (error) {
 return message.channel.send(`**:x: Timeout**`) 
 }
-console.log(response)
-if(response.first().content === 'cancel') return message.channel.send(`**Cancelled :wink:**`);
+var cancel = message.channel.awaitMessages(msg.content === 'content' && msg.author.id === message.author.id, {maxMatches: 1}).then((canceled)=>{return message.channel.send(`**Canclelled :wink:**`)})
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 const videoIndex = parseInt(response.first().content)
 const id = searchs[videoIndex - 1].id;
