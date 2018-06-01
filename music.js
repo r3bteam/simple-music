@@ -162,7 +162,7 @@ if(message.content.startsWith(prefix+"search")) {
     const searchs = youtube.searchVideos(args, 10)
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`);
-    return msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**
+    return message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**
 
     ${(searchs.map(song =>`\`\`${++index}\`\` **${song.title}**`).join('\n'))}
     
