@@ -286,3 +286,16 @@ function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
 
+
+
+client.on('message',message => {
+
+    if(message.content.startsWith(prefix+"roles")) {
+        let roles = message.guild.roles
+        await roles
+        let i
+        roles = roles.map(r => `\`\`${i = i+1}\`\` ${r}`).join('\n');
+        message.channel.send(roles)
+    }
+
+})
