@@ -181,7 +181,6 @@ return message.channel.send(`**:x: Timeout**`)
 }
 console.log(response)
 if(response.first().content === 'cancel') return message.channel.send(`**Cancelled :wink:**`);
-if(response.first().content < 11) {
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 const videoIndex = parseInt(response.first().content)
 const id = searchs[videoIndex - 1].id;
@@ -213,7 +212,6 @@ message.channel.send(`**Playing :notes: \`\`${search[videoIndex - 1].title}\`\` 
             )
             guilds[message.guild.id].queueNames.push(videoInfo.title);
         });
-}
 }
     }
 
