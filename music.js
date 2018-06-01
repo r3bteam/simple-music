@@ -107,14 +107,16 @@ client.on('message', async function(message) {
         }
 
         if(message.content.startsWith(prefix+"search")) {
-        const simpleytapi = await require('simple-youtube-api')
-        const youtube = await new simpleytapi(yt_api_key)
+        const simpleytapi = require('simple-youtube-api')
+        const youtube = new simpleytapi(yt_api_key)
         const searchs = await youtube.searchVideos(args, 10)
         let index = 0
         
         message.channel.send(` 
         ${searchs.map(song => `**${++index}** ${song.title}`).join('\n')}
         `)
+
+        .catch(err => console.log(err))
 
         }
 
