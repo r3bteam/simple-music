@@ -106,21 +106,6 @@ client.on('message', async function(message) {
             message.reply(novc);
         }
 
-        if(message.content.startsWith(prefix+"search")) {
-        console.log("...")
-        const simpleytapi = require('simple-youtube-api')
-        const youtube = new simpleytapi(yt_api_key)
-        const searchs = await youtube.searchVideos(args, 10)
-        let index = 0
-        
-        message.channel.send(` 
-        ${searchs.map(song => `**${++index}** ${song.title}`).join('\n')}
-        `)
-
-        .catch(err => console.log(err))
-
-        }
-
     } else if (mess.startsWith(prefix + "skip") || mess.startsWith(prefix+"عدي")) {
         if(!message.member.voiceChannel) return message.reply(novc)
         if(message.member.hasPermission('MANAGE_CHANNELS')) {
@@ -170,6 +155,20 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
     message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
     }
 }
+
+if(message.content.startsWith(prefix+"search")) {
+    const simpleytapi = require('simple-youtube-api')
+    const youtube = new simpleytapi(yt_api_key)
+    const searchs = await youtube.searchVideos(args, 10)
+    let index = 0
+    
+    message.channel.send(` 
+    ${searchs.map(song => `**${++index}** ${song.title}`).join('\n')}
+    `)
+
+    .catch(err => console.log(err))
+
+    }
 
 else if (message.content.startsWith(prefix + 'vol') || mess.startsWith(prefix+"صوت")) {
     if (!message.member.voiceChannel) return message.reply(novc);
