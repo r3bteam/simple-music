@@ -166,7 +166,7 @@ if(message.content.startsWith(prefix+"search")) {
 
     message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n
     
-    ${new Discord.RichEmbed() .setDescription(searchs.map(song => `\`\`${++index}\`\` **${song.title}**`).join('\n\n')) .setColor('RED')}
+    ${(searchs.map(song => `\`\`${++index}\`\` **${song.title}**`).join('\n'))}
     
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
@@ -346,4 +346,4 @@ function search_video(query, callback) {
 function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
-
+//////////////
