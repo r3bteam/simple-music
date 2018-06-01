@@ -163,7 +163,7 @@ if(message.content.startsWith(prefix+"search")) {
     let index = 0
 
     message.channel.send(` 
-    ${searchs.map(song => `**${++index}** ${song.title}`).join('\n')}
+    ${searchs.map(song => `**\`\`${++index}\`\`** ${song.title}`).join('\n')}
     `)
 try {
 var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 && msg2.author.id === message.author.id, {
@@ -174,6 +174,7 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 } catch (error) {
 return message.channel.send(`**:x: Timeout**`) 
 }
+if(response.first().content === 'cancel') return message.channel.send(`**Canceled :wink:**`);
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 const videoIndex = parseInt(response.first().content)
 const id = searchs[videoIndex - 1].id;
@@ -184,6 +185,7 @@ playMusic(id, message);
 guilds[message.guild.id].isPlaying = true;
 guilds[message.guild.id].queue.push(id);
 guilds[message.guild.id].queueNames.push(searchs[videoIndex - 1].title);
+message.channel.send(`**Playing :notes: \`\`${search[videoIndex - 1].title}\`\` - Now!**`);
 });
 } else {
         fetchVideoInfo(id, function(err, videoInfo) {
