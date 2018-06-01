@@ -283,26 +283,3 @@ function search_video(query, callback) {
 function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
-
-
-client.on('message', message => {
-
-if(message.content.startsWith(prefix+'apply')) {
-let channel = client.channels.get('451967959431381012')
-message.channel.send(`**انت كيف حال مدير كويس ؟ كويس حمدلله ... سوي صح عشان كمل يا هيوان`).then(msg => {
-msg.react('✅').then(r => {msg.react('❌')})
-const filter1 = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.author.id
-const filter2 = (reaction, user) => reaction.emoji.name === '❌' && user.id === message.author.id
-const correct = msg.awaitReactions(filter1, { time: 2000000 })
-const falseee = msg.awaitReactions(filter2, { time: 2000000 })
-
-falseee.on('collect', r=> {
-return message.channel.send(`**Alright, your application was canceled**`)
-})
-correct.on('collect', r=> {
-return message.channel.send(`**This works boy!**`)
-})
-
-})
-}
-});
