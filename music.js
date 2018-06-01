@@ -179,6 +179,7 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 } catch (error) {
 return message.channel.send(`**:x: Timeout**`) 
 }
+console.log(response)
 if(response.first().content === 'cancel') return message.channel.send(`**Cancelled :wink:**`)
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 const videoIndex = parseInt(response.first().content)
