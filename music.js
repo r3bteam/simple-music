@@ -163,7 +163,7 @@ if(message.content.startsWith(prefix+"search")) {
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
     message.channel.send(`**:mag_right: Searching...**`).then((msg)=> {
-    msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**
+    return msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**
 
     ${(searchs.map(song =>`\`\`${++index}\`\` **${song.title}**`).join('\n'))}
     
@@ -178,40 +178,40 @@ if(message.content.startsWith(prefix+"search")) {
 // } catch (error) {
 // return message.channel.send(`**:x: Timeout**`) 
 // }
-if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
-const videoIndex = parseInt(response.first().content)
-const id = searchs[videoIndex - 1].id;
-if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
-fetchVideoInfo(id, function(err, videoInfo) {
-if (err) throw new Error(err);
-if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
-else message.react(correct)
-playMusic(id, message);
-guilds[message.guild.id].isPlaying = true;
-guilds[message.guild.id].queue.push(id);
-guilds[message.guild.id].queueNames.push(searchs[videoIndex - 1].title);
-message.channel.send(`**Playing :notes: \`\`${searchs[videoIndex - 1].title}\`\` - Now!**`);
-});
-} else {
-        fetchVideoInfo(`${id}`, function(err, videoInfo) {
-            if (err) throw new Error(err);
-            if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
-            else message.react(correct)
-            add_to_queue(id, message);
-            message.channel.send(new Discord.RichEmbed()
-            .setAuthor("Added to queue", message.author.avatarURL)
-            .setTitle(videoInfo.title)
-            .setURL(videoInfo.url)
-            .addField("Channel", videoInfo.owner, true)
-            .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
-            .addField("Published at", videoInfo.datePublished, true)
-            .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
-            .setColor("RED")
-            .setThumbnail(videoInfo.thumbnailUrl)
-            )
-            guilds[message.guild.id].queueNames.push(videoInfo.title);
-        });
-}
+// if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
+// const videoIndex = parseInt(response.first().content)
+// const id = searchs[videoIndex - 1].id;
+// if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
+// fetchVideoInfo(id, function(err, videoInfo) {
+// if (err) throw new Error(err);
+// if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
+// else message.react(correct)
+// playMusic(id, message);
+// guilds[message.guild.id].isPlaying = true;
+// guilds[message.guild.id].queue.push(id);
+// guilds[message.guild.id].queueNames.push(searchs[videoIndex - 1].title);
+// message.channel.send(`**Playing :notes: \`\`${searchs[videoIndex - 1].title}\`\` - Now!**`);
+// });
+// } else {
+//         fetchVideoInfo(`${id}`, function(err, videoInfo) {
+//             if (err) throw new Error(err);
+//             if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
+//             else message.react(correct)
+//             add_to_queue(id, message);
+//             message.channel.send(new Discord.RichEmbed()
+//             .setAuthor("Added to queue", message.author.avatarURL)
+//             .setTitle(videoInfo.title)
+//             .setURL(videoInfo.url)
+//             .addField("Channel", videoInfo.owner, true)
+//             .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
+//             .addField("Published at", videoInfo.datePublished, true)
+//             .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
+//             .setColor("RED")
+//             .setThumbnail(videoInfo.thumbnailUrl)
+//             )
+//             guilds[message.guild.id].queueNames.push(videoInfo.title);
+//         });
+// }
     }
 
 
