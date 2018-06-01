@@ -191,7 +191,7 @@ playMusic(id, message);
 guilds[message.guild.id].isPlaying = true;
 guilds[message.guild.id].queue.push(id);
 guilds[message.guild.id].queueNames.push(searchs[videoIndex - 1].title);
-message.channel.send(`**Playing :notes: \`\`${search[videoIndex - 1].title}\`\` - Now!**`);
+message.channel.send(`**Playing :notes: \`\`${searchs[videoIndex - 1].title}\`\` - Now!**`);
 });
 } else {
         fetchVideoInfo(`${id}`, function(err, videoInfo) {
