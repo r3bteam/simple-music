@@ -166,7 +166,7 @@ if(message.content.startsWith(prefix+"search")) {
     ${searchs.map(song => `**${++index}** ${song.title}`).join('\n')}
     `)
 try {
-var response = await message.channel.awaitMessages(msg2 => ms2.content > 0 && msg2.content < 11 && msg2.author.id === message.author.id, {
+var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 && msg2.author.id === message.author.id, {
     maxMatches: 1,
     time: 15000,
     errors: ['time'],
