@@ -161,7 +161,7 @@ if(message.content.startsWith(prefix+"search")) {
     const youtube = new simpleytapi(yt_api_key)
     const searchs = await youtube.searchVideos(args, 10)
     let index = 0
-    
+
     message.channel.send(` 
     ${searchs.map(song => `**${++index}** ${song.title}`).join('\n')}
     `)
@@ -175,6 +175,8 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 return message.channel.send(`**:x: Timeout**`) 
 }
 const videoIndex = parseInt(response.first().content)
+playMusic(searchs[videoIndex - 1].id, message);
+guilds[message.guild.id].isPlaying = true;
 guilds[message.guild.id].queue.push(searchs[videoIndex - 1].id);
 guilds[message.guild.id].queueNames.push(searchs[videoIndex - 1].title);
     }
