@@ -11,6 +11,7 @@ const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4"
 const prefix = "m-";
 client.login(process.env.SECERT_KEY);
 var guilds = {};
+/////////////////////////////////////////////////////////////////
 client.on('ready', function() {
     console.log("[Launching...] Matrix Premium Music Bot V0.9");
 });
@@ -103,6 +104,18 @@ client.on('message', async function(message) {
             }
         } else {
             message.reply(novc);
+        }
+
+        if(message.content.startsWith(prefix+"search")) {
+        const simpleytapi = await require('simple-youtube-api')
+        const youtube = await new simpleytapi(yt_api_key)
+        const searchs = await youtube.searchVideos(args, 10)
+        let index = 0
+        
+        message.channel.send(` 
+        ${searchs.map(song => `**${++index}** ${song.title}`).join('\n')}
+        `)
+
         }
 
     } else if (mess.startsWith(prefix + "skip") || mess.startsWith(prefix+"عدي")) {
@@ -286,17 +299,3 @@ function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
 
-
-
-client.on('message',async function(message)
- {
-
-    if(message.content.startsWith(prefix+"roles")) {
-        let roles = message.guild.roles
-        await roles
-        let i = 0
-        roles = roles.map(r => `\`\`${i = i+1}\`\` ${r}`).join('\n');
-        message.channel.send(roles)
-    }
-
-})
