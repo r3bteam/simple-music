@@ -107,6 +107,7 @@ client.on('message', async function(message) {
         }
 
         if(message.content.startsWith(prefix+"search")) {
+        console.log("...")
         const simpleytapi = require('simple-youtube-api')
         const youtube = new simpleytapi(yt_api_key)
         const searchs = await youtube.searchVideos(args, 10)
