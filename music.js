@@ -182,6 +182,7 @@ return message.channel.send(`**:x: Timeout**`)
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 const videoIndex = parseInt(response.first().content)
 const id = searchs[videoIndex - 1].id;
+console.log(id)
 fetchVideoInfo(id, function(err, videoInfo) {
 if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
 else message.react(correct)
