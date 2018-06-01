@@ -290,7 +290,10 @@ function isYoutube(str) {
 client.on('message', async message => {
 if(message.content.startsWith(prefix+"system")) {
 await message.channel.send(`**The new system..**`)
-message.channel.awaitMessages(msg => {msg.author.id === message.author.id && msg.content === "confirm"}, {time: 150000, max: 1});
-return message.channel.send(`**Alrighty**`)
+const test = message.channel.awaitMessages(msg => {msg.author.id === message.author.id && msg.content === "confirm" || msg.content === 'cancel'}, {time: 15000, max: 1, errors: ['time']}).then((collected)=> {
+console.log(test)
+}).catch((collected) => {
+return message.channel.send(`Proccess got canceled!`)
+})
 }
 })
