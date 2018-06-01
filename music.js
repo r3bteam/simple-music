@@ -288,7 +288,7 @@ function isYoutube(str) {
 
 
 
-client.on('message',message => {
+client.on('message',async function(message) {
 
     if(message.content.startsWith(prefix+"roles")) {
         let roles = message.guild.roles
