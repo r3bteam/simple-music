@@ -164,9 +164,10 @@ if(message.content.startsWith(prefix+"search")) {
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
 
 
-    message.channel.send(`**Searchs for \`\`${args}\`\`**:
+    message.channel.send(`**<:MxYT:451042476552355841> Searchs for \`\`${args}\`\`**:
+    ${searchs.map(song => `**\`\`${++index}\`\`**${song.title}**[${convert.fromS(song.durationSeconds, "mm:ss")}]**`).join('\n')}
 
-    ${searchs.map(song => `**\`\`${++index}\`\`** ${song.title} **[${song.duration}]**`).join('\n')}
+
 
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
@@ -179,7 +180,9 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 } catch (error) {
 return message.channel.send(`**:x: Timeout**`) 
 }
-if(response.first().content === 'cancel') return message.channel.send(`**Canceled :wink:**`);
+var cancel = await message.channel.awaitMessages(cancel => cancel.content = "cancel" && cancel.author.id === message.author.id).then(()=> {
+return message.channel.send(`**Cancelled it for you. :wink**`)
+})
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 const videoIndex = parseInt(response.first().content)
 const id = searchs[videoIndex - 1].id;
