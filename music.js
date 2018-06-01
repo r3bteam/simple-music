@@ -286,14 +286,3 @@ function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1;
 }
 
-
-client.on('message', async message => {
-if(message.content.startsWith(prefix+"system")) {
-await message.channel.send(`**The new system..**`)
-const test = message.channel.awaitMessages(msg => {msg.author.id === message.author.id && msg.content === "confirm"}, {time: 15000, max: 1, errors: ['time']}).then((collected)=> {
-message.channel.send(`**Alrigthy**`)
-}).catch((collected) => {
-return message.channel.send(`Proccess got canceled!`)
-})
-}
-})
