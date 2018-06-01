@@ -8,7 +8,6 @@ const fs = require("fs");
 const getYouTubeID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
 const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4"
-const simpleytapi = require('simple-youtube-api')
 const prefix = "m-";
 client.login(process.env.SECERT_KEY);
 var guilds = {};
@@ -158,59 +157,62 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
 }
 
 if(message.content.startsWith(prefix+"search")) {
+    const simpleytapi = require('simple-youtube-api')
     const youtube = new simpleytapi(yt_api_key)
-    const searchs = youtube.searchVideos(args, 10)
+    const searchs = await youtube.searchVideos(args, 10)
     let index = 0
-    if(!args) return message.channel.send(`**${prefix}search [song name]**`);
-    return message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**
+    if(!args) return message.channel.send(`**${prefix}search [song name]**`)
 
-    ${(searchs.map(song =>`\`\`${++index}\`\` **${song.title}**`).join('\n'))}
+
+    message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n
+    
+    ${(searchs.map(song => `\`\`${++index}\`\` **${song.title}**`).join('\n'))}
     
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)
-// try {
-// var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
-//     maxMatches: 1,
-//     time: 30000,
-//     errors: ['time'],
-// });
-// } catch (error) {
-// return message.channel.send(`**:x: Timeout**`) 
-// }
-// if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
-// const videoIndex = parseInt(response.first().content)
-// const id = searchs[videoIndex - 1].id;
-// if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
-// fetchVideoInfo(id, function(err, videoInfo) {
-// if (err) throw new Error(err);
-// if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
-// else message.react(correct)
-// playMusic(id, message);
-// guilds[message.guild.id].isPlaying = true;
-// guilds[message.guild.id].queue.push(id);
-// guilds[message.guild.id].queueNames.push(searchs[videoIndex - 1].title);
-// message.channel.send(`**Playing :notes: \`\`${searchs[videoIndex - 1].title}\`\` - Now!**`);
-// });
-// } else {
-//         fetchVideoInfo(`${id}`, function(err, videoInfo) {
-//             if (err) throw new Error(err);
-//             if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
-//             else message.react(correct)
-//             add_to_queue(id, message);
-//             message.channel.send(new Discord.RichEmbed()
-//             .setAuthor("Added to queue", message.author.avatarURL)
-//             .setTitle(videoInfo.title)
-//             .setURL(videoInfo.url)
-//             .addField("Channel", videoInfo.owner, true)
-//             .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
-//             .addField("Published at", videoInfo.datePublished, true)
-//             .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
-//             .setColor("RED")
-//             .setThumbnail(videoInfo.thumbnailUrl)
-//             )
-//             guilds[message.guild.id].queueNames.push(videoInfo.title);
-//         });
-// }
+try {
+var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
+    maxMatches: 1,
+    time: 30000,
+    errors: ['time'],
+});
+} catch (error) {
+return message.channel.send(`**:x: Timeout**`) 
+}
+if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
+const videoIndex = parseInt(response.first().content)
+const id = await searchs[videoIndex - 1].id;
+if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
+fetchVideoInfo(id, function(err, videoInfo) {
+if (err) throw new Error(err);
+if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
+else message.react(correct)
+playMusic(id, message);
+guilds[message.guild.id].isPlaying = true;
+guilds[message.guild.id].queue.push(id);
+guilds[message.guild.id].queueNames.push(searchs[videoIndex - 1].title);
+message.channel.send(`**Playing :notes: \`\`${searchs[videoIndex - 1].title}\`\` - Now!**`);
+});
+} else {
+        fetchVideoInfo(`${id}`, function(err, videoInfo) {
+            if (err) throw new Error(err);
+            if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
+            else message.react(correct)
+            add_to_queue(id, message);
+            message.channel.send(new Discord.RichEmbed()
+            .setAuthor("Added to queue", message.author.avatarURL)
+            .setTitle(videoInfo.title)
+            .setURL(videoInfo.url)
+            .addField("Channel", videoInfo.owner, true)
+            .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
+            .addField("Published at", videoInfo.datePublished, true)
+            .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
+            .setColor("RED")
+            .setThumbnail(videoInfo.thumbnailUrl)
+            )
+            guilds[message.guild.id].queueNames.push(videoInfo.title);
+        });
+}
     }
 
 
