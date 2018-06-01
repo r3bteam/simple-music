@@ -157,18 +157,18 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
 }
 
 if(message.content.startsWith(prefix+"search")) {
-    const simpleytapi = require('simple-youtube-api')
-    const youtube = new simpleytapi(yt_api_key)
+    const simpleytapi = await require('simple-youtube-api')
+    const youtube = await new simpleytapi(yt_api_key)
     const searchs = youtube.searchVideos(args, 10)
     let index = 0
-    if(!args) return message.channel.send(`**${prefix}search [song name]**`)
+    if(!args) return message.channel.send(`**${prefix}search [song name]**`);
     message.channel.send(`**:mag_right: Searching...**`).then((msg)=> {
     return msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**
 
     ${(searchs.map(song =>`\`\`${++index}\`\` **${song.title}**`).join('\n'))}
     
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
-    `)})
+    `)}).catch(err=> console.log(err))
 // try {
 // var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
 //     maxMatches: 1,
