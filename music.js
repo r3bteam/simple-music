@@ -223,7 +223,7 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 return message.channel.send(`**:x: Timeout**`) 
 }
 if(guilds[message.guild.id].queue.length > 250) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(async function(){
-    await queueclear();
+    await queueclear(); //
     message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
 })
 if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
