@@ -71,7 +71,6 @@ client.on('message', async function(message) {
                 if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
                     const playlist = await youtube.getPlaylist(url);
                     const videos = await playlist.getVideos();
-                    console.log(playlist)
                     return;
                 } 
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
@@ -101,7 +100,10 @@ client.on('message', async function(message) {
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
                     playMusic(videos[0].id, message)
+                    guilds[message.guild.id].queueNames.push(videos[0].title)
+                    guilds[message.guild.id].queue.push(videos[0].id)
                     videos.slice(1).forEach(video => {
+                        guilds[message.guild.id].isPlaying = true;
                         guilds[message.guild.id].queueNames.push(video.title)
                         guilds[message.guild.id].queue.push(video.id)
                     })
