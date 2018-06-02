@@ -28,6 +28,7 @@ client.on('message', async function(message) {
     if(message.author.bot) return;
     if(!message.channel.guild) return;
     //
+    if(message.content.includes(client.user.id) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`:flag_eu: **EU-1122F** server.`)
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
     const novc = "**<:MxNo:449703922190385153> | You are not in a voice channel.**"
     const nomatch = "**<:MxNo:449703922190385153> You've to be in the same voice channel!**"
