@@ -27,7 +27,7 @@ client.on('disconnect', function() {
 client.on('message', async function(message) {
     if(message.author.bot) return;
     if(!message.channel.guild) return;
-    //
+    //////////////////////////////////
     if(message.content.includes(client.user.id) || message.content.startsWith(`<@${client.user.id}>`)) return message.channel.send(`:flag_eu: **EU-1122F** server.`)
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
     const novc = "**<:MxNo:449703922190385153> | You are not in a voice channel.**"
@@ -64,17 +64,31 @@ client.on('message', async function(message) {
         guilds[message.guild.id].skipReq = [];
     }
 
+    function queueclear() { 
+        guilds[message.guild.id].queue.slice(1) = [];
+        guilds[message.guild.id].queueNames.slice(1) = [];
+    }
+
 
     if (mess.startsWith(prefix + "play") || mess.startsWith(prefix+"شغل")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
-                if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-                    const playlist = await youtube.getPlaylist(url);
-                    const videos = await playlist.getVideos();
-                    return;
-                } 
+                if(guilds[message.guild.id].queue.length > 250) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(()=> {
+                await queueclear();
+                message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
+                })
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
+                    if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+                        const playlist = await youtube.getPlaylist(args);
+                        const videos = await playlist.getVideos();
+                        videos.forEach(video => {
+                            guilds[message.guild.id].isPlaying = true;
+                            guilds[message.guild.id].queueNames.push(video.title)
+                            guilds[message.guild.id].queue.push(video.id)
+                        })
+                        return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.length}** items Added to the **Queue**!`)                    ;
+                    }
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
@@ -83,7 +97,7 @@ client.on('message', async function(message) {
                         add_to_queue(id, message);
                         message.channel.send(new Discord.RichEmbed()
                         .setAuthor("Added to queue", message.author.avatarURL)
-                        .setTitle(videoInfo.title)
+                        .setTitle(videoInfo.title)      
                         .setURL(videoInfo.url)
                         .addField("Channel", videoInfo.owner, true)
                         .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
@@ -208,6 +222,10 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 } catch (error) {
 return message.channel.send(`**:x: Timeout**`) 
 }
+if(guilds[message.guild.id].queue.length > 250) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(()=> {
+    await queueclear();
+    message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
+    })
 if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
 const videoIndex = parseInt(response.first().content)
 const id = videos[videoIndex - 1].id;
