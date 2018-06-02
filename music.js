@@ -67,15 +67,9 @@ client.on('message', async function(message) {
     if (mess.startsWith(prefix + "play") || mess.startsWith(prefix+"شغل")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
-            if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
-                const url = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
-                if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-                    const playlist = await youtube.getPlaylist(url);
-                    const videos = await playlist.getVideos();
-                    console.log(playlist)
-                    return;
-                } 
+            if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) { 
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
+                if(args.includes('playlist')) return message.channel.send(`**:rocket: Not supported yet!**`)
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
