@@ -64,7 +64,7 @@ client.on('message', async function(message) {
         guilds[message.guild.id].skipReq = [];
     }
 
-    async function queueclear() { 
+    function queueclear() { 
         guilds[message.guild.id].queue.slice(1) = [];
         guilds[message.guild.id].queueNames.slice(1) = [];
     }
@@ -75,7 +75,7 @@ client.on('message', async function(message) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
                 if(guilds[message.guild.id].queue.length > 250) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(()=> {
-                await queueclear();
+                queueclear();
                 message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
                 })
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
