@@ -229,6 +229,7 @@ if(guilds[message.guild.id].queue.length > 250) return message.channel.send(`**S
 if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
 const videoIndex = parseInt(response.first().content)
 const id = videos[videoIndex - 1].id;
+message.delete();
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
 fetchVideoInfo(id, function(err, videoInfo) {
 if (err) throw new Error(err);
