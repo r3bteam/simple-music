@@ -28,8 +28,8 @@ client.on('message', async function(message) {
     if(!message.channel.guild) return;
     //
     const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
-    const novc = "**<:no:439399928960253964> | You are not in a voice channel.**"
-    const nomatch = "**:MxNo: You've to be in the same voice channel!**"
+    const novc = "**<:MxNo:449703922190385153> | You are not in a voice channel.**"
+    const nomatch = "**<:MxNo:449703922190385153> You've to be in the same voice channel!**"
     const yt = "<:MxYT:451042476552355841>"
     const correct = client.guilds.get('448425456316973057').emojis.get("451040030635458574")
     const nope = client.guilds.get('448425456316973057').emojis.get('451040031277056001')
@@ -127,7 +127,7 @@ client.on('message', async function(message) {
                 message.channel.send(`**:point_up::skin-tone-1: ${message.author.username} has vote to skip current song! **` + Math.ceil((guilds[message.guild.id].voiceChannel.members.size - 1) / 2) - guilds[message.guild.id].skipReq) + "**  more votes to skip! **";
             }
         } else {
-            message.reply("<:no:439399928960253964> you already voted to skip!");
+            message.reply("<:MxNo:449703922190385153> you already voted to skip!");
         }
 
     } else if (mess.startsWith(prefix + "queue") || mess.startsWith(prefix+"قائمة")) {
@@ -161,7 +161,7 @@ if(message.content.startsWith(prefix+"search")) {
     const youtube = new simpleytapi(yt_api_key);
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
-    message.channel.send(`**:mag_right: Searching....**`).then((msg) => {
+    message.channel.send(`**:mag_right: Searching....**`).then(async function(msg) {
     const searchs = await youtube.searchVideos(args, 10)
     msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**
     ${(searchs.map(song => `**\`\`${++index}\`\`** ${song.title}`).join('\n'))}
@@ -250,7 +250,7 @@ else if (mess.startsWith(prefix + 'join') || mess.startsWith(prefix+"ادخل"))
         message.member.voiceChannel.join().then(message.react(correct));
         message.channel.send(`**:page_facing_up: Queue moved to \`\`${message.member.voiceChannel.name}\`\`**`)
     } else {
-        message.channel.send(`<:no:439399928960253964> **Music is being played in another voice channel!**`)
+        message.channel.send(`<:MxNo:449703922190385153> **Music is being played in another voice channel!**`)
     }
 }
 
