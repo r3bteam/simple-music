@@ -183,9 +183,8 @@ if(mess.startsWith(prefix+"stfu") || message.content.startsWith(`<@${client.user
     if (guilds[message.guild.id].voiceChannel)
     { 
     await clear()
-    const stfu = message.guild.emojis.find("name", "stfu");
     message.guild.voiceConnection.disconnect();
-    message.channel.send(`${stfu} k sempai!`)
+    message.channel.send(`<:stfu:452319846261194773> k sempai!`)
     }
 }
 
