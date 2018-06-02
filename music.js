@@ -163,8 +163,7 @@ if(message.content.startsWith(prefix+"search")) {
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
     message.channel.send(`**:mag_right: Searching....**`).then(async function(msg) {
     const searchs = await youtube.searchVideos(args, 10)
-    msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**
-    ${(searchs.map(song => `**\`\`${++index}\`\`** ${song.title}`).join('\n'))}
+    msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n${(searchs.map(song =>`**\`\`${++index}\`\`** ${song.title}`).join('\n'))}
     
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)})
