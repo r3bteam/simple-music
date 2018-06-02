@@ -184,7 +184,7 @@ if(mess.startsWith(prefix+"stfu") || message.content.startsWith(`<@${client.user
     { 
     await clear()
     message.guild.voiceConnection.disconnect();
-    message.channel.send(`:stfu: k sempai!`)
+    message.channel.send(`\:stfu: k sempai!`)
     }
 }
 
