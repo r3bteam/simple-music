@@ -98,7 +98,7 @@ client.on('message', async function(message) {
             })
             } else {
                 if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-                    const playlist = await youtube.getPlaylist(url);
+                    const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
                     console.log(playlist)
                     return;
