@@ -7,6 +7,7 @@ const convert = require("hh-mm-ss")
 const fs = require("fs");
 const getYouTubeID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
+const simpleytapi = require('simple-youtube-api')
 const yt_api_key = "AIzaSyDoH9YxF0yi6ljyi2txYZHB10vXNUEP_2U"
 const prefix = "m-";
 client.login(process.env.SECERT_KEY);
@@ -36,6 +37,8 @@ client.on('message', async function(message) {
     const member = message.member;
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
+    const youtube = new simpleytapi(yt_api_key);
+
 
     if (!guilds[message.guild.id]) {
         guilds[message.guild.id] = {
@@ -66,6 +69,11 @@ client.on('message', async function(message) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
+                if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+                    const playlist = await youtube.getPlaylist(url);
+                    const videos = await playlist.getVideos();
+                    console.log(playlist)
+                } else {
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
@@ -86,6 +94,7 @@ client.on('message', async function(message) {
                         guilds[message.guild.id].queueNames.push(videoInfo.title);
                     });
                 })
+            }
             })
             } else {
                 message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(() => {
@@ -157,13 +166,11 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
 }
 
 if(message.content.startsWith(prefix+"search")) {
-    const simpleytapi = require('simple-youtube-api')
-    const youtube = new simpleytapi(yt_api_key);
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
     message.channel.send(`**:mag_right: Searching....**`).then(async function(msg) {
     const searchs = await youtube.searchVideos(args, 10)
-    msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n${(searchs.map(song =>`**\`\`${++index}\`\`** ${song.title}`).join('\n'))}
+    msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n\n${(searchs.map(song =>`**\`\`${++index}\`\`** ${song.title}`).join('\n'))}
     
     **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
     `)})
