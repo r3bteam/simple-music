@@ -159,8 +159,9 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
 
 if(message.content.startsWith(prefix+"search")) {
     const simpleytapi = require('simple-youtube-api')
-    const youtube = new simpleytapi(yt_api_key)
+    const youtube = new simpleytapi(yt_api_key);
     const searchs = youtube.searchVideos(args, 10)
+    console.log(searchs)
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
 
