@@ -69,7 +69,7 @@ client.on('message', async function(message) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) { 
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
-                if(args.includes('playlist')) return message.channel.send(`**:rocket: Not supported yet!**`)
+                if(args.includes('https://www.youtube.com/playlist?list=PL-Qk-LMGlrgDkYiMIgO2S7tTLgBlh51c1')) return message.channel.send(`**:rocket: Not supported yet!**`)
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
