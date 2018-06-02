@@ -78,17 +78,17 @@ client.on('message', async function(message) {
                 queueclear();
                 message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
                 })
+                if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+                    const playlist = await youtube.getPlaylist(args);
+                    const videos = await playlist.getVideos();
+                    videos.forEach(video => {
+                        guilds[message.guild.id].isPlaying = true;
+                        guilds[message.guild.id].queueNames.push(video.title)
+                        guilds[message.guild.id].queue.push(video.id)
+                    })
+                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.length}** items Added to the **Queue**!`)                    ;
+                }
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
-                    if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-                        const playlist = await youtube.getPlaylist(args);
-                        const videos = await playlist.getVideos();
-                        videos.forEach(video => {
-                            guilds[message.guild.id].isPlaying = true;
-                            guilds[message.guild.id].queueNames.push(video.title)
-                            guilds[message.guild.id].queue.push(video.id)
-                        })
-                        return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.length}** items Added to the **Queue**!`)                    ;
-                    }
                 getID(args, function(id) {
                     fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
