@@ -81,6 +81,7 @@ client.on('message', async function(message) {
                 if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
+                    if(videos.length + guilds[message.guild.id].queue.length > 250) return message.channel.send(`:lock: Due to **Queue** maximum number **250** you can't add this playlist!\n your playlist **${videos.length}** + items in queue **${guilds[message.guild.id].queue.length}** = \`\`${Math.floor(guilds[message,guilds.id].queue.length + videos.length)}\`\` `)
                     videos.forEach(video => {
                         guilds[message.guild.id].isPlaying = true;
                         guilds[message.guild.id].queueNames.push(video.title)
