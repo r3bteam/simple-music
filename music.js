@@ -7,7 +7,7 @@ const convert = require("hh-mm-ss")
 const fs = require("fs");
 const getYouTubeID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
-const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4"
+const yt_api_key = "AIzaSyDoH9YxF0yi6ljyi2txYZHB10vXNUEP_2U"
 const prefix = "m-";
 client.login(process.env.SECERT_KEY);
 var guilds = {};
