@@ -107,7 +107,7 @@ client.on('message', async function(message) {
                         guilds[message.guild.id].queueNames.push(video.title)
                         guilds[message.guild.id].queue.push(video.id)
                     })
-                    return message.channel.send(`:musical_score: **${playlist.title}** playlist: :fire: **${videos.length}** song Added to the **Queue!**\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
+                    return message.channel.send(`:musical_score: **${playlist.title}** ❯❯ **${videos.length}** song Added to the **Queue**!\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
                 }
                 message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(() => {
                 getID(args, function(id) {
@@ -174,6 +174,17 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
     await clear()
     message.guild.voiceConnection.disconnect();
     message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
+    }
+}
+
+if(mess.startsWith(prefix+"stfu") || message.content.startsWith(`<@${client.user.id}> stfu`)) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
+    if (guilds[message.guild.id].voiceChannel)
+    { 
+    await clear()
+    message.guild.voiceConnection.disconnect();
+    message.channel.send(`:stfu: k sempai!`)
     }
 }
 
