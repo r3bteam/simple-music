@@ -64,7 +64,7 @@ client.on('message', async function(message) {
         guilds[message.guild.id].skipReq = [];
     }
 
-    function queueclear() { 
+    async function queueclear() { 
         guilds[message.guild.id].queue.slice(1) = [];
         guilds[message.guild.id].queueNames.slice(1) = [];
     }
