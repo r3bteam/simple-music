@@ -211,7 +211,7 @@ if(mess.startsWith(prefix+"np")) {
     fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
         if (err) throw new Error(err);
                         message.channel.send(new Discord.RichEmbed()
-                        .setAuthor("Now Playing.", videoInfo.url)
+                        .setAuthor("Now Playing.", videoInfo.thumbnailUrl)
                         .setTitle(videoInfo.title)      
                         .setURL(videoInfo.url)
                         .addField("Channel", videoInfo.owner,)
