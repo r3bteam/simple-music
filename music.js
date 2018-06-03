@@ -119,12 +119,10 @@ client.on('message', async function(message) {
                     playMusic(videos[0].id, message)
                     guilds[message.guild.id].queueNames.push(videos[0].title)
                     guilds[message.guild.id].queue.push(videos[0].id)
-                    videos.slice(1).forEach(video => {
-                        if(videos.length == 10) {
+                    videos.slice(1, 249).forEach(video => {
                         guilds[message.guild.id].isPlaying = true;
                         guilds[message.guild.id].queueNames.push(video.title)
                         guilds[message.guild.id].queue.push(video.id)
-                        }
                     })
                     return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.length}** items Added to the **Queue**!\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
                 }
