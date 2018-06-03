@@ -364,10 +364,10 @@ async function playMusic(id, message) {
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
                 setTimeout(function() {
-                if(guilds[message.guild.id].voiceChannel != null) return message.channel.send(`**:stop_button: Queue concluded.**`)
+                if(guilds[message.guild.id].voiceChannel !== null) return message.channel.send(`**:stop_button: Queue concluded.**`)
             }, 1000)
             } else {
-                setTimeout(function() {
+                setTimeout(async function() {
                     if(!guilds[message.guild.id].queueNames || guilds[message.guild.id].queueNames[0] == undefined) return;
                     await playMusic(guilds[message.guild.id].queue[0], message);
                    message.channel.send(`**Playing :notes: \`\`${guilds[message.guild.id].queueNames[0]}\`\` - Now!**`)
