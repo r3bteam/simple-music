@@ -350,7 +350,8 @@ async function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
         stream = ytdl("https://www.youtube.com/watch?v=" + id, {
-            filter: 'audioonly'
+            filter: 'audioonly',
+            quality: 'highestaudio'
         });
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
@@ -361,7 +362,7 @@ async function playMusic(id, message) {
            await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
             if (guilds[message.guild.id].queue.length === 0) {  
-                guilds[message.guild.id].queue = [];
+                guilds[message.guild.id].queue = [];            
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
                 setTimeout(function() {
@@ -380,7 +381,7 @@ async function playMusic(id, message) {
 
 function getID(str, cb) {
     if (isYoutube(str)) {
-        cb(getYouTubeID(str));
+         cb(getYouTubeID(str));
     } else {
         search_video(str, function(id) {
             cb(id);
