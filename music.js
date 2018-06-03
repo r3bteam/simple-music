@@ -204,6 +204,7 @@ client.on('message', async function(message) {
     }
 
 if(mess.startsWith(prefix+"np")) {
+    if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server.**`)
     fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
         if (err) throw new Error(err);
                         message.channel.send(new Discord.RichEmbed()
