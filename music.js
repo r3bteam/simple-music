@@ -74,7 +74,7 @@ client.on('message', async function(message) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
  		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
-                if(guilds[message.guild.id].queue.length > 250) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(()=> {
+                if(guilds[message.guild.id].queue.length > 100) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(()=> {
                 queueclear();
                 message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
                 })
@@ -115,16 +115,15 @@ client.on('message', async function(message) {
                 if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
-                    if(videos.length > 250) message.channel.send(`:lock: Due to **Queue** maximum number **250** you can't add this playlist!\n**${playlist.title}** have over **${videos.length}** items!`)
                     playMusic(videos[0].id, message)
                     guilds[message.guild.id].queueNames.push(videos[0].title)
                     guilds[message.guild.id].queue.push(videos[0].id)
-                    videos.slice(1, 249).forEach(video => {
+                    videos.slice(1, 100).forEach(video => {
                         guilds[message.guild.id].isPlaying = true;
                         guilds[message.guild.id].queueNames.push(video.title)
                         guilds[message.guild.id].queue.push(video.id)
                     })
-                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.length}** items Added to the **Queue**!\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
+                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.slice(1, 100).length}** items Added to the **Queue**!\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
                 }
                 message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(() => {
                 getID(args, function(id) {
@@ -224,7 +223,7 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 } catch (error) {
 return message.channel.send(`**:x: Timeout**`) 
 }
-if(guilds[message.guild.id].queue.length > 250) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(async function(){
+if(guilds[message.guild.id].queue.length > 100) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(async function(){
     await queueclear(); //
     message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
 })
