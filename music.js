@@ -353,7 +353,7 @@ async function playMusic(id, message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
         guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: guilds[message.guild.id].volume});
-        guilds[message.guild.id].dispatcher.on('end', function() {                                                                                                
+        guilds[message.guild.id].dispatcher.on('end', async function() {                                                                                                
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
            await guilds[message.guild.id].queue.shift();
