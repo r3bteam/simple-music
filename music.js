@@ -252,10 +252,7 @@ if(mess.startsWith(prefix+"stfu") || message.content.startsWith(`<@${client.user
 if(message.content.startsWith(prefix+"search")) {
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
-    const voiceChannel = message.member.voiceChannel
-    const permissions = voiceChannel.permissionsFor(message.client.user)
-    if (!permissions.has('CONNECT')) return message.channel.send({embed: {description: "🛑 I don't have permission to CONNECT! Give me some."}});
-    if (!permissions.has('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});    const videos = await youtube.searchVideos(args, 10)
+    const videos = await youtube.searchVideos(args, 10)
     message.channel.send(`**:mag_right: Searching....**`).then(async function(msg) {
     const searchs = await youtube.searchVideos(args, 10)
     msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n\n${(searchs.map(song =>`**\`\`${++index}\`\`** ${song.title}`).join('\n'))}
@@ -277,6 +274,10 @@ if(guilds[message.guild.id].queue.length > 100) return message.channel.send(`**S
 })
 if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
 const videoIndex = parseInt(response.first().content)
+const voiceChannel = message.member.voiceChannel
+const permissions = voiceChannel.permissionsFor(message.client.user)
+if (!permissions.has('CONNECT')) return message.channel.send({embed: {description: "🛑 I don't have permission to CONNECT! Give me some."}});
+if (!permissions.has('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});    
 const id = videos[videoIndex - 1].id;
 message.delete();
 if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) {
