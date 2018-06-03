@@ -72,6 +72,9 @@ client.on('message', async function(message) {
 
     if (mess.startsWith(prefix + "play") || mess.startsWith(prefix+"شغل")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
+            const permissions = guilds[message.guild.id].voiceChannel.permissionsFor(message.client.user)
+        if (!permissions.has('CONNECT')) return message.channel.send({embed: {description: "🛑 I don't have permission to CONNECT! Give me some."}});
+        if (!permissions.has('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});
          if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
                 if(guilds[message.guild.id].queue.length > 100) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(()=> {
@@ -377,9 +380,6 @@ function skip_song(message) {
 
 async function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
-    const permissions = guilds[message.guild.id].voiceChannel.permissionsFor(client.user).toArray(); //Thank's to iCrawl! <3
-    if (!permissions.includes('CONNECT')) return message.channel.send({embed: {description: "🛑 I don't have permission to CONNECT! Give me some."}});
-    if (!permissions.includes('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
         stream = ytdl("https://www.youtube.com/watch?v=" + id, {
             filter: 'audioonly',
