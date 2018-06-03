@@ -323,7 +323,7 @@ else if (mess.startsWith(prefix + 'join') || mess.startsWith(prefix+"ادخل"))
 
 else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if(!guilds[message.guild.id].queueNames.length[0] || !guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server**`)
+    if(!guilds[message.guild.id].queueNames[0] || !guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server**`)
    if(guilds[message.guild.id].queueNames.length > 1) {
     if(!args || isNaN(args)) {
     guilds[message.guild.id].queueNames.splice(1, guilds[message.guild.id].queueNames.length)
