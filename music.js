@@ -83,12 +83,12 @@ client.on('message', async function(message) {
                     const videos = await playlist.getVideos();
                     const queuesync = 100 - guilds[message.guild.id].queue.length
                     if(queuesync < 0 || queuesync == 0) return message.channel.send(`:x: Cannot add this playlist, **\`\`MAX_QUEUE = 100\`\`** clear the current queue and try again!`)
-                    videos.slice(0, ).forEach(video => {
+                    videos.slice(0, queuesync).forEach(video => {
                         guilds[message.guild.id].isPlaying = true;
                         guilds[message.guild.id].queueNames.push(video.title)
                         guilds[message.guild.id].queue.push(video.id)
                     })
-                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.length}** items Added to the **Queue**!`)                    ;
+                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${queuesync}** items Added to the **Queue**!`)                    ;
                 }
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
                 getID(args, function(id) {
@@ -124,7 +124,7 @@ client.on('message', async function(message) {
                         guilds[message.guild.id].queueNames.push(video.title)
                         guilds[message.guild.id].queue.push(video.id)
                     })
-                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.slice(1, 100).length}** items Added to the **Queue**!\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
+                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.slice(0, 100).length}** items Added to the **Queue**!\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
                 }
                 message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(() => {
                 getID(args, function(id) {
