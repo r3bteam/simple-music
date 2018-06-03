@@ -177,12 +177,12 @@ client.on('message', async function(message) {
         else {
             let x;
             if(args > 1) {
-             x = Math.floor(args)*10+2
+             x = Math.floor(args)*10+1
             } else {
               x = Math.floor(11)
             }
             let i;
-            if(x > 1) {
+            if(args > 1) {
                 i = x-10
                } else {
                  i = 0
