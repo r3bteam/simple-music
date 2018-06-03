@@ -189,9 +189,9 @@ client.on('message', async function(message) {
                } else {
                  i = 0
                }
-            if(Math.floor(x/10) > guilds[message.guild.id].queue.length / 10) return message.channel.send(`**<:MxNo:449703922190385153> | Page Doesn't Exist**`)
+            if(Math.floor(x/10) > parseInt(guilds[message.guild.id].queue.length / 10)) return message.channel.send(`**<:MxNo:449703922190385153> | Page Doesn't Exist**`)
             return message.channel.send('', {embed: {
-                description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n :arrow_down: __Up Next__  :arrow_down:\n${guilds[message.guild.id].queueNames.slice(x-10,x).map(song => `**\`\`${++i}.\`\`** [${song}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[i]})`).join('\n')}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${parseInt(Math.floor(x/10))} of ${guilds[message.guild.id].queue.length / 10} **`,
+                description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n :arrow_down: __Up Next__  :arrow_down:\n${guilds[message.guild.id].queueNames.slice(x-10,x).map(song => `**\`\`${++i}.\`\`** [${song}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[i]})`).join('\n')}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${Math.floor(x/10)} of ${parseInt(guilds[message.guild.id].queue.length / 10)}**`,
                 color: 3447003
             }}) 
         }
