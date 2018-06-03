@@ -9,6 +9,7 @@ const getYouTubeID = require("get-youtube-id");
 const fetchVideoInfo = require("youtube-info");
 const simpleytapi = require('simple-youtube-api')
 const yt_api_key = "AIzaSyDoH9YxF0yi6ljyi2txYZHB10vXNUEP_2U"
+const permissions = guilds[message.guild.id].voiceChannel.permissionsFor(client.user)
 const prefix = "m-";
 client.login(process.env.SECERT_KEY);
 var guilds = {};
@@ -72,7 +73,10 @@ client.on('message', async function(message) {
 
     if (mess.startsWith(prefix + "play") || mess.startsWith(prefix+"شغل")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
- 		if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
+         if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
+         if (!permissions.includes('CONNECT')) return message.channel.send({embed: {description: "🛑 I don't have permission to CONNECT! Give me some."}});
+            if (!permissions.includes('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});
+            console.log(permissions)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
                 if(guilds[message.guild.id].queue.length > 100) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(()=> {
                 queueclear();
@@ -377,9 +381,6 @@ function skip_song(message) {
 
 async function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
-    const permissions = guilds[message.guild.id].voiceChannel.permissionsFor(client.user)
-    if (!permissions.includes('CONNECT')) return message.channel.send({embed: {description: "🛑 I don't have permission to CONNECT! Give me some."}});
-    if (!permissions.includes('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
         stream = ytdl("https://www.youtube.com/watch?v=" + id, {
             filter: 'audioonly',
