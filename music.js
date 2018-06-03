@@ -175,9 +175,10 @@ client.on('message', async function(message) {
         color: 3447003
         }});
         else {
+            let x = parseInt(args * 10) | 10
             let i = 0
             return message.channel.send('', {embed: {
-                description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n :arrow_down: __Up Next__  :arrow_down:\n${guilds[message.guild.id].queueNames.slice(1).map(song => `**\`\`${i = i+1}.\`\`** [${song}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[i]})`).join('\n')}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length}**`,
+                description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n :arrow_down: __Up Next__  :arrow_down:\n${guilds[message.guild.id].queueNames.slice(1, x).map(song => `**\`\`${i = i+1}.\`\`** [${song}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[i]})`).join('\n')}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${x/10} of ${guilds[message.guild.id].queue.length / 10} **`,
                 color: 3447003    
             }}) 
         }
