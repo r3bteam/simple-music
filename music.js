@@ -194,6 +194,7 @@ client.on('message', async function(message) {
                }
             let queuelist = guilds[message.guild.id].queueNames.slice(x-10,x).map(song => `**\`\`${++i}.\`\`** [${song}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[i]})`).join('\n\n')
             if(!queuelist) return message.channel.send(`<:MxNo:449703922190385153> | Page doesn't exist!`)
+            console.log(queuelist.length)
             return message.channel.send('', {embed: {
                 description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n:arrow_down: __Up Next__  :arrow_down:\n\n${queuelist}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${Math.floor(x/10)} of ${Math.ceil((guilds[message.guild.id].queue.slice(1).length+10) /10)}**`,
                 thumbnail: {url: "https://upload.wikimedia.org/wikipedia/commons/7/73/YouTube_Music.png"} , 
