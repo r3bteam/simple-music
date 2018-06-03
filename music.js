@@ -174,6 +174,10 @@ client.on('message', async function(message) {
         if(guilds[message.guild.id].queueNames.length < 1) return message.channel.send(`**:x: Nothing playing in this server**`);
         if(!guilds[message.guild.id].queueNames[1]) return message.channel.send('', {embed: {
         description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**`,
+        author: {
+        name: `${message.guild.name}'s Queue.`,
+        icon_url: message.guild.iconURL
+        },
         color: 3447003
         }});
         else {
@@ -192,7 +196,7 @@ client.on('message', async function(message) {
             let queuelist = guilds[message.guild.id].queueNames.slice(x-10,x).map(song => `**\`\`${++i}.\`\`** [${song}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[i]})`).join('\n\n')
             if(!queuelist) return message.channel.send(`<:MxNo:449703922190385153> | Page doesn't exist!`)
             return message.channel.send('', {embed: {
-                description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n:arrow_down: __Up Next__  :arrow_down:\n\n${queuelist}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${Math.floor(x/10)} of ${Math.ceil((guilds[message.guild.id].queue.length+10) /10 - 1)}**`,
+                description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n:arrow_down: __Up Next__  :arrow_down:\n\n${queuelist}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${Math.floor(x/10)} of ${Math.ceil((guilds[message.guild.id].queue.slice(1).length+10) /10)}**`,
                 thumbnail: {url: "https://upload.wikimedia.org/wikipedia/commons/7/73/YouTube_Music.png"} , 
                 color: 3447003
             }}) 
@@ -202,9 +206,6 @@ client.on('message', async function(message) {
 if(mess.startsWith(prefix+"np")) {
     fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
         if (err) throw new Error(err);
-                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
-                        else message.react(correct)
-                        add_to_queue(id, message);
                         message.channel.send(new Discord.RichEmbed()
                         .setAuthor("Added to queue", message.author.avatarURL)
                         .setTitle(videoInfo.title)      
