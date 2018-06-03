@@ -377,6 +377,9 @@ function skip_song(message) {
 
 async function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
+    const permissions = guilds[message.guild.id].voiceChannel.permissionsFor(client.user)
+    if (!permissions.includes('CONNECT')) return message.channel.send({embed: {description: "🛑 I don't have permission to CONNECT! Give me some."}});
+    if (!permissions.includes('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
         stream = ytdl("https://www.youtube.com/watch?v=" + id, {
             filter: 'audioonly',
