@@ -359,7 +359,6 @@ async function playMusic(id, message) {
             guilds[message.guild.id].skippers = [];
            await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
-            guilds[message.guild.id].dispatcher.destroy();
             if (guilds[message.guild.id].queue.length === 0) {  
                 guilds[message.guild.id].queue = [];
                 guilds[message.guild.id].queueNames = [];
