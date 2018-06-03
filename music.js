@@ -197,6 +197,10 @@ client.on('message', async function(message) {
             return message.channel.send('', {embed: {
                 description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n:arrow_down: __Up Next__  :arrow_down:\n\n${queuelist}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${Math.floor(x/10)} of ${Math.floor((guilds[message.guild.id].queue.slice(1).length+10) /10)}**`,
                 thumbnail: {url: "https://upload.wikimedia.org/wikipedia/commons/7/73/YouTube_Music.png"} , 
+                author: {
+                    name: `${message.guild.name}'s Queue.`,
+                    icon_url: message.guild.iconURL
+                    },
                 color: 3447003
             }}) 
         }
@@ -207,13 +211,14 @@ if(mess.startsWith(prefix+"np")) {
     fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
         if (err) throw new Error(err);
                         message.channel.send(new Discord.RichEmbed()
-                        .setAuthor("Added to queue", message.author.avatarURL)
+                        .setAuthor("Now Playing.", videoInfo.url)
                         .setTitle(videoInfo.title)      
                         .setURL(videoInfo.url)
                         .addField("Channel", videoInfo.owner, true)
                         .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
                         .addField("Published at", videoInfo.datePublished, true)
-                        .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
+                        .addField("Like Count", `👍:skin-tone-1: ${videoInfo.likeCount}`, true)
+                        .addField("Dislike Count",`👎:skin-tone-1: ${videoInfo.dislikeCount}`, true)
 						.setColor("RED")
 						.setThumbnail(videoInfo.thumbnailUrl)
                         )
