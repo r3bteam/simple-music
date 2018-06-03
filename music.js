@@ -183,7 +183,7 @@ client.on('message', async function(message) {
             }
             let i;
             if(args > 1) {
-                i = x-10
+                i = x-11
                } else {
                  i = 0
                }
