@@ -136,6 +136,7 @@ client.on('message', async function(message) {
                         guilds[message.guild.id].isPlaying = true;
                         guilds[message.guild.id].queue.push(id);
                         guilds[message.guild.id].queueNames.push(videoInfo.title);
+                        console.log(guilds[message.guild.id].queue)
                         message.channel.send(`**Playing :notes: \`\`${videoInfo.title}\`\` - Now!**`);
                     });
                 })})
