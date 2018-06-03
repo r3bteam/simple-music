@@ -72,7 +72,8 @@ client.on('message', async function(message) {
 
     if (mess.startsWith(prefix + "play") || mess.startsWith(prefix+"شغل")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
-            const permissions = guilds[message.guild.id].voiceChannel.permissionsFor(message.client.user)
+        const voiceChannel = message.member.voiceChannel
+        const permissions = voiceChannel.permissionsFor(message.client.user)
         if (!permissions.has('CONNECT')) return message.channel.send({embed: {description: "🛑 I don't have permission to CONNECT! Give me some."}});
         if (!permissions.has('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});
          if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
