@@ -189,9 +189,10 @@ client.on('message', async function(message) {
                } else {
                  i = 0
                }
-            if(Math.floor(x/10) > parseInt(guilds[message.guild.id].queue.length / 10 - 1)) return message.channel.send(`**<:MxNo:449703922190385153> | Page Doesn't Exist**`)
+            let queuelist = guilds[message.guild.id].queueNames.slice(x-10,x).map(song => `**\`\`${++i}.\`\`** [${song}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[i]})`).join('\n\n')
+            if(!queuelist) return message.channel.send(`<:MxNo:449703922190385153> | Page doesn't exist!`)
             return message.channel.send('', {embed: {
-                description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n :arrow_down: __Up Next__  :arrow_down:\n${guilds[message.guild.id].queueNames.slice(x-10,x).map(song => `**\`\`${++i}.\`\`** [${song}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[i]})`).join('\n')}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${Math.floor(x/10)} of ${parseInt(guilds[message.guild.id].queue.length / 10 - 1)}**`,
+                description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n :arrow_down: __Up Next__  :arrow_down:\n${queuelist}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${Math.floor(x/10)} of ${parseInt(guilds[message.guild.id].queue.length+10 / 10 - 1)}**`,
                 color: 3447003
             }}) 
         }
@@ -322,6 +323,7 @@ else if (mess.startsWith(prefix + 'join') || mess.startsWith(prefix+"ادخل"))
 
 else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) {
     if (!message.member.voiceChannel) return message.reply(novc);
+    if(!guilds[message.guild.id].queueNames.length[0] || !guilds[message.guild.id].queueNames.isPlaying) return message.channel.send(`**:x: Nothing playing in this server**`)
    if(guilds[message.guild.id].queueNames.length > 1) {
     if(!args || isNaN(args)) {
     guilds[message.guild.id].queueNames.splice(1, guilds[message.guild.id].queueNames.length)
@@ -329,6 +331,7 @@ else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) 
     message.channel.send(`:asterisk: Cleared the queue of **${message.guild.name}**`)
     } else if(args) {
         const removedsong = guilds[message.guild.id].queueNames[parseInt(args)]
+        if(!removedsong) return message.channel.send(`:x: **No such item, or item doesn't exist!**`)
         guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
         guilds[message.guild.id].queue.splice(parseInt(args), 1)
         return message.channel.send(`:wastebasket: Removed **${removedsong}** from the queue.`);}
