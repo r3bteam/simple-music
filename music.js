@@ -193,10 +193,31 @@ client.on('message', async function(message) {
             if(!queuelist) return message.channel.send(`<:MxNo:449703922190385153> | Page doesn't exist!`)
             return message.channel.send('', {embed: {
                 description: `__Now Playing:__\n**[${guilds[message.guild.id].queueNames[0]}](https://www.youtube.com/watch?v=${guilds[message.guild.id].queue[0]})**\n\n:arrow_down: __Up Next__  :arrow_down:\n\n${queuelist}\n\n**Total items in queue: ${guilds[message.guild.id].queueNames.length} | Page ${Math.floor(x/10)} of ${Math.ceil((guilds[message.guild.id].queue.length+10) /10 - 1)}**`,
+                thumbnail: {url: "https://upload.wikimedia.org/wikipedia/commons/7/73/YouTube_Music.png"} , 
                 color: 3447003
             }}) 
         }
     }
+
+if(mess.startsWith(prefix+"np")) {
+    fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
+        if (err) throw new Error(err);
+                        if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
+                        else message.react(correct)
+                        add_to_queue(id, message);
+                        message.channel.send(new Discord.RichEmbed()
+                        .setAuthor("Added to queue", message.author.avatarURL)
+                        .setTitle(videoInfo.title)      
+                        .setURL(videoInfo.url)
+                        .addField("Channel", videoInfo.owner, true)
+                        .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
+                        .addField("Published at", videoInfo.datePublished, true)
+                        .addField("Postion in queue", guilds[message.guild.id].queueNames.length, true)
+						.setColor("RED")
+						.setThumbnail(videoInfo.thumbnailUrl)
+                        )
+    })
+}
 
 if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
     if (!message.member.voiceChannel) return message.reply(novc);
