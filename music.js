@@ -344,7 +344,7 @@ function skip_song(message) {
 }
 
 
-function playMusic(id, message) {
+async function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
         stream = ytdl("https://www.youtube.com/watch?v=" + id, {
@@ -356,8 +356,8 @@ function playMusic(id, message) {
         guilds[message.guild.id].dispatcher.on('end', function() {                                                                                                
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
-            guilds[message.guild.id].queue.shift();
-            guilds[message.guild.id].queueNames.shift();
+           await guilds[message.guild.id].queue.shift();
+           await guilds[message.guild.id].queueNames.shift();
             guilds[message.guild.id].dispatcher.destroy();
             if (guilds[message.guild.id].queue.length === 0) {  
                 guilds[message.guild.id].queue = [];
@@ -369,7 +369,7 @@ function playMusic(id, message) {
             } else {
                 setTimeout(function() {
                     if(!guilds[message.guild.id].queueNames || guilds[message.guild.id].queueNames[0] == undefined) return;
-                    playMusic(guilds[message.guild.id].queue[0], message);
+                    await playMusic(guilds[message.guild.id].queue[0], message);
                    message.channel.send(`**Playing :notes: \`\`${guilds[message.guild.id].queueNames[0]}\`\` - Now!**`)
                 }, 500);
             }
