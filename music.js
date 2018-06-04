@@ -381,7 +381,7 @@ function skip_song(message) {
     guilds[message.guild.id].dispatcher.end();
 }
 
-
+//ERROR: Playing 1 item over and over.
 async function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
