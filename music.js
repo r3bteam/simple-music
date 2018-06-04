@@ -455,10 +455,7 @@ client.on(`message`, message => {
     const convert = require("hh-mm-ss")
     let startTime = 0;
     let endTime = 0;
-    if(message.content.startsWith('start')) {
-        startTime += Date.now();
-        console.log(startTime)
-    }
+    if(message.content.startsWith('start')) startTime += Date.now(); else 
     if(message.content.startsWith('stop')) {
         endTime += Date.now();
         console.log(endTime)
