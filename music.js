@@ -449,3 +449,17 @@ function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1 || str.toLowerCase().indexOf("youtu.be") > -1;
 }
 //////////////
+
+
+client.on(`message`, message => {
+    const convert = require("hh-mm-ss")
+    let startTime = 0;
+    let endTime = 0;
+    if(message.content.startsWith('start')) {
+        startTime = Date.now();
+    }
+    if(message.content.startsWith('stop')) {
+        endTime = Date.now();
+        message.channel.send(`**${convert.fromS((endTime-startTime), "hh:mm:ss")}`)
+    }
+})
