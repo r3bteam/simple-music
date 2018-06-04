@@ -460,6 +460,8 @@ client.on(`message`, message => {
     }
     if(message.content.startsWith('stop')) {
         endTime = Date.now();
-        message.channel.send(`**${convert.fromS((endTime-startTime), "hh:mm:ss")}`)
+        console.log(startTime)
+        console.log(endTime)
+        message.channel.send(`**${convert.fromS((endTime-startTime), "hh:mm:ss")}**`)
     }
 })
