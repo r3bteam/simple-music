@@ -453,12 +453,11 @@ function isYoutube(str) {
 
 client.on(`message`, message => {
     const convert = require("hh-mm-ss")
-    let startTime = 0;
-    let endTime = 0;
-    if(message.content.startsWith('start')) startTime += Date.now(); else 
-    if(message.content.startsWith('stop')) {
-        endTime += Date.now();
-        console.log(endTime)
-        message.channel.send(`**${convert.fromS((endTime-startTime), "hh:mm:ss")}**`)
+    if(message.content.startsWith('start')) {
+        let startTime = Date.now().then(function(){
+            if(message.content.startsWith('stop')){
+            message.channel.send(`**${convert.fromS((Date.now() - startTime), "hh:mm:ss")}**`)
+            }
+        })
     }
-})
+});
