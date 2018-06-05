@@ -257,8 +257,8 @@ if(message.content.startsWith(prefix+"search")) {
     message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**`,{embed: {
     description: videos.map(song =>`**[${++index}]** [${song.title}](${song.url})`).join('\n'),
     author: {
-    icon_url: `${message.author.avatarURL} (${message.author.id})`,
-    name: message.author.username  
+    icon_url: message.author.avatarURL,
+    name: `${message.author.username} (${message.author.id})`  
     },
     footer: {
         text: "Select a song from 1 to 10, or do  to cancel!",
