@@ -409,18 +409,11 @@ async function playMusic(id, message) {
         guilds[message.guild.id].skippers = [];
         guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: guilds[message.guild.id].volume});
         guilds[message.guild.id].dispatcher.on('end', async function() {
-            let i = 0; 
-            ++i
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
-           if(guilds[message.guild.id].loop = true) {        
-            let queueMusic = guilds[message.guild.id].queue.slice(i)[0]
-            playMusic(queueMusic, message)
-            console.log(i)
-            console.log(queueMusic)
-            return;
-           }
-           await guilds[message.guild.id].queue.shift();
+           if(guilds[message.guild.id].loop = true) return playMusic(guilds[message.guild.id].queue[0], message);                          
+            // let queueMusic = guilds[message.guild.id].queue.slice(i)[0]
+               await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
             if (guilds[message.guild.id].queue.length === 0) {
                 guilds[message.guild.id].queue = [];          
