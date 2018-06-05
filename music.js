@@ -253,12 +253,10 @@ if(message.content.startsWith(prefix+"search")) {
     let index = 0
     if(!args) return message.channel.send(`**${prefix}search [song name]**`)
     const videos = await youtube.searchVideos(args, 10)
-    message.channel.send(`**:mag_right: Searching....**`).then(async function(msg) {
-    const searchs = await youtube.searchVideos(args, 10)
-    msg.edit(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n\n${(searchs.map(song =>`**\`\`${++index}\`\`** ${song.title}`).join('\n'))}
-    
-    **Select a song from 1 to 10, or type \`\`cancel\`\` to exit!**
-    `)})
+    message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**\n\n`,{embed: {
+    description: videos.map(song =>`**[${++index}]** [${song.title}](${song.url})`).join('\n'),
+    footer: `Select a song from 1 to 10, or do \`\`cancel\`\` to cancel!`,
+    }})
 try {
 var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
     maxMatches: 1,
