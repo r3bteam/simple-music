@@ -262,8 +262,7 @@ if(message.content.startsWith(prefix+"search")) {
     footer: {
         text: "Select a song from 1 to 10, or do  to cancel!",
         icon_url: "https://cdn.discordapp.com/emojis/451042476552355841.png?v=1"
-    },
-    color: FF0000
+    }
     }})
 try {
 var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
