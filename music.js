@@ -353,10 +353,9 @@ else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل"))
 else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
-    message.channel.send(':repeat: **Looping Enabled!**').then(() => {
-        await guilds[message.guild.id].loop === true;
-        console.log(guilds[message.guild.id].loop);
-    });
+    guilds[message.guild.id].loop = true;
+    message.channel.send(':repeat: **Looping Enabled!**')
+    
 }
 
 
@@ -409,10 +408,11 @@ async function playMusic(id, message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
         guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: guilds[message.guild.id].volume});
-        guilds[message.guild.id].dispatcher.on('end', async function() {                                                                                             
+        guilds[message.guild.id].dispatcher.on('end', async function() {
+            console.log(guilds[message.guild.id].loop)                                                                                             
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
-            if(guilds[message.guild.id].loop == true){
+            if(guilds[message.guild.id].loop = true) {
                 return playMusic(guilds[message.guild.id].queue[0], message);
                 console.log(`This should work..`)
             }
