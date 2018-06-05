@@ -412,9 +412,12 @@ async function playMusic(id, message) {
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
            if(guilds[message.guild.id].loop = true) {
-               let i = -1;
-               ++i
-               return playMusic(guilds[message.guild.id].queue[i], message);
+            let i = -1;
+            ++i
+            let x = guilds[message.guild.id].queue.slice(i)
+            playMusic(guilds[message.guild.id].queue[x[0]], message)
+            console.log(i)
+            return;
            }
            await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
