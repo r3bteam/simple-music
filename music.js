@@ -63,6 +63,8 @@ client.on('message', async function(message) {
         guilds[message.guild.id].voiceChannel = null;
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skipReq = [];
+        guilds[message.guild.id].loop = false;
+        guilds[message.guild.id].volume = 1;
     }
 
     function queueclear() { 
