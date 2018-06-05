@@ -353,9 +353,14 @@ else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل"))
 else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
+    if(guilds[message.guild.id].loop = true) {
+        message.channel.send(`:arrow_right_hook: **Looping Disabled`)
+        guilds[message.guild.id].loop = false;        
+        return;
+    } else {
     guilds[message.guild.id].loop = true;
-    message.channel.send(':repeat: **Looping Enabled!**')
-    
+    message.channel.send(':repeat_one: **Looping Enabled!**')
+    }
 }
 
 
@@ -399,7 +404,6 @@ function skip_song(message) {
 //ERROR: Playing 1 item over and over.
 async function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
-    let i = 0;
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
         stream = ytdl("https://www.youtube.com/watch?v=" + id, {
             filter: 'audioonly',
@@ -410,13 +414,11 @@ async function playMusic(id, message) {
         guilds[message.guild.id].skippers = [];
         guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: guilds[message.guild.id].volume});
         guilds[message.guild.id].dispatcher.on('end', async function() {
-            ++i
-            console.log(i)
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
            if(guilds[message.guild.id].loop = true) return playMusic(guilds[message.guild.id].queue[0], message);                          
             // let queueMusic = guilds[message.guild.id].queue.slice(i)[0]
-               await guilds[message.guild.id].queue.shift();
+           await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
             if (guilds[message.guild.id].queue.length === 0) {
                 guilds[message.guild.id].queue = [];          
