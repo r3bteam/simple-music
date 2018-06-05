@@ -51,6 +51,7 @@ client.on('message', async function(message) {
             volume: 1,
             skipReq: 0,
             skippers: [],
+            loop: false
         };
     }
 
@@ -347,6 +348,14 @@ else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل"))
     });
 }
 
+else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
+    message.channel.send(':repeat: **Looping Enabled!**').then(() => {
+        guilds[message.guild.id].loop == true;
+    });
+}
+
 
 else if (mess.startsWith(prefix + 'join') || mess.startsWith(prefix+"ادخل")) {
     if (!message.member.voiceChannel) return message.reply(novc);
@@ -397,12 +406,15 @@ async function playMusic(id, message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skippers = [];
         guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: guilds[message.guild.id].volume});
-        guilds[message.guild.id].dispatcher.on('end', async function() {                                                                                                
+        guilds[message.guild.id].dispatcher.on('end', async function() {                                                                                             
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
+            if(guilds[message.guild.id].loop == true){
+                playMusic(guilds[message.guild.id].queue[0], message);
+            }
            await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
-            if (guilds[message.guild.id].queue.length === 0) {  
+            if (guilds[message.guild.id].queue.length === 0) {
                 guilds[message.guild.id].queue = [];          
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
