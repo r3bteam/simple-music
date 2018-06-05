@@ -399,6 +399,7 @@ function skip_song(message) {
 //ERROR: Playing 1 item over and over.
 async function playMusic(id, message) {
     guilds[message.guild.id].voiceChannel = message.member.voiceChannel;
+    let i = 0;
     guilds[message.guild.id].voiceChannel.join().then(function(connection) {
         stream = ytdl("https://www.youtube.com/watch?v=" + id, {
             filter: 'audioonly',
@@ -409,6 +410,8 @@ async function playMusic(id, message) {
         guilds[message.guild.id].skippers = [];
         guilds[message.guild.id].dispatcher = connection.playStream(stream, {bitrate: "auto", volume: guilds[message.guild.id].volume});
         guilds[message.guild.id].dispatcher.on('end', async function() {
+            ++i
+            console.log(i)
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
            if(guilds[message.guild.id].loop = true) return playMusic(guilds[message.guild.id].queue[0], message);                          
