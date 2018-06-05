@@ -255,9 +255,15 @@ if(message.content.startsWith(prefix+"search")) {
     const videos = await youtube.searchVideos(args, 10)
     message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**`,{embed: {
     description: videos.map(song =>`**[${++index}]** [${song.title}](${song.url})`).join('\n'),
+    author: {
+    icon_url: message.author.avatarURL,
+    name: message.author.username  
+    },
     footer: {
-        text: "`Select a song from 1 to 10, or do \`\`cancel\`\` to cancel!`"
-    }
+        text: "Select a song from 1 to 10, or do  to cancel!",
+        icon_url: "https://cdn.discordapp.com/emojis/451042476552355841.png?v=1"
+    },
+    color: FF0000
     }})
 try {
 var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
