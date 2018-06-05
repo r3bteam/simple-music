@@ -64,7 +64,7 @@ client.on('message', async function(message) {
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skipReq = [];
         guilds[message.guild.id].loop = false;
-        guilds[message.guild.id].volume = 1;
+        guilds[message.guild.id].volume = 1 ;
     }
 
     function queueclear() { 
@@ -412,7 +412,7 @@ async function playMusic(id, message) {
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
             if(guilds[message.guild.id].loop == true){
-                playMusic(guilds[message.guild.id].queue[0], message);
+                return playMusic(guilds[message.guild.id].queue[0], message);
             }
            await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
