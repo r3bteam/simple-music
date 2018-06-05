@@ -255,7 +255,9 @@ if(message.content.startsWith(prefix+"search")) {
     const videos = await youtube.searchVideos(args, 10)
     message.channel.send(`**<:MxYT:451042476552355841> Search Results for \`\`${args}\`\`**`,{embed: {
     description: videos.map(song =>`**[${++index}]** [${song.title}](${song.url})`).join('\n'),
-    footer: `Select a song from 1 to 10, or do cancel to cancel!`,
+    footer: {
+        text: "`Select a song from 1 to 10, or do \`\`cancel\`\` to cancel!`"
+    }
     }})
 try {
 var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11 || msg2.content === 'cancel' && msg2.author.id === message.author.id, {
