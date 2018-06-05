@@ -355,6 +355,7 @@ else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':repeat: **Looping Enabled!**').then(() => {
         guilds[message.guild.id].loop == true;
+        console.log(guilds[message.guild.id].loop);
     });
 }
 
@@ -413,6 +414,7 @@ async function playMusic(id, message) {
             guilds[message.guild.id].skippers = [];
             if(guilds[message.guild.id].loop == true){
                 return playMusic(guilds[message.guild.id].queue[0], message);
+                console.log(`This should work..`)
             }
            await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
