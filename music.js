@@ -354,7 +354,7 @@ else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
     message.channel.send(':repeat: **Looping Enabled!**').then(() => {
-        guilds[message.guild.id].loop == true;
+        await guilds[message.guild.id].loop === true;
         console.log(guilds[message.guild.id].loop);
     });
 }
