@@ -15,7 +15,9 @@ var guilds = {};
 /////////////////////////////////////////////////////////////////
 client.on('ready', function() {
     console.log("[Launching...] Matrix Premium Music Bot V0.9");
-});
+}).once('ready', function(){
+client.user.setActivity(":tada 1.0 version!", {type: "LISTENING"})
+})
 client.on('reconnecting', function() {
     console.log("[Reconnting...] Matrix Premium Music Bot V0.9");
 });
@@ -213,8 +215,10 @@ client.on('message', async function(message) {
 
 if(mess.startsWith(prefix+"np")) {
     if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server.**`)
-    fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
-        if (err) throw new Error(err);
+    message.channel.startTyping()
+    await fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
+                        if (err) throw new Error(err);
+                        message.channel.stopTyping(true);
                         message.channel.send(new Discord.RichEmbed()
                         .setAuthor("Now Playing.", videoInfo.thumbnailUrl)
                         .setTitle(videoInfo.title)      
@@ -380,17 +384,17 @@ else if (mess.startsWith(prefix + 'clear') || mess.startsWith(prefix+"نظف")) 
     if (!message.member.voiceChannel) return message.reply(novc);
     if(!guilds[message.guild.id].queueNames[0] || !guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server**`)
    if(guilds[message.guild.id].queueNames.length > 1) {
-    if(!args || isNaN(args)) {
+    if(!args || isNaN(args) && args != 0) {
     guilds[message.guild.id].queueNames.splice(1, guilds[message.guild.id].queueNames.length)
     guilds[message.guild.id].queue.splice(1, guilds[message.guild.id].queue.length)
     message.channel.send(`:asterisk: Cleared the queue of **${message.guild.name}**`)
-    } else if(args) {
+    } else if(args > 0) {
         const removedsong = guilds[message.guild.id].queueNames[parseInt(args)]
         if(!removedsong) return message.channel.send(`:x: **No such item, or item doesn't exist!**`)
         guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
         guilds[message.guild.id].queue.splice(parseInt(args), 1)
         return message.channel.send(`:wastebasket: Removed **${removedsong}** from the queue.`);}
-   } else {
+   } else if(guilds[message.guild.id].queueNames.length <= 1 ) {
        message.channel.send(`<:MxNo:449703922190385153> There's only 1 item in the queue. use \`\`${prefix}skip\`\` instead! `)
    }
 }
@@ -475,4 +479,3 @@ function isYoutube(str) {
     return str.toLowerCase().indexOf("youtube.com") > -1 || str.toLowerCase().indexOf("youtu.be") > -1;
 }
 //////////////
-
