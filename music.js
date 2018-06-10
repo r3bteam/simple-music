@@ -88,8 +88,7 @@ client.on('message', async function(message) {
                 queueclear();
                 message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
                 })
-                if (args.match( /^.*(youtu.be\/|list=)([^#\&\?]*).*/)) {
-                   console.log(`Link passed test.c`)
+                if (args.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)) {
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
                     const queuesync = 100 - guilds[message.guild.id].queue.length
@@ -124,7 +123,8 @@ client.on('message', async function(message) {
                 })
             })
             } else {
-                if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+                if (args.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)) {
+                    console.log('RegExp works..')
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
                     playMusic(videos[0].id, message)
