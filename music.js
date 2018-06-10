@@ -434,7 +434,6 @@ async function playMusic(id, message) {
                 guilds[message.guild.id].queue = [];          
                 guilds[message.guild.id].queueNames = [];
                 guilds[message.guild.id].isPlaying = false;
-                try {guilds[message.guild.id].dispatcher.destroy();} catch (err) {console.log(err)};
                 setTimeout(function() {
                 if(guilds[message.guild.id].voiceChannel !== null) return message.channel.send(`**:stop_button: Queue concluded.**`)
             }, 1000)
