@@ -89,6 +89,7 @@ client.on('message', async function(message) {
                 message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
                 })
                 if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/) || args.match(/^http:\/\/(?:www\.)?youtube\.com\/watch\?(?:&.*)*((?:v=([a-zA-Z0-9_\-]{11})(?:&.*)*&list=([a-zA-Z0-9_\-]{18}))|(?:list=([a-zA-Z0-9_\-]{18})(?:&.*)*&v=([a-zA-Z0-9_\-]{11})))(?:&.*)*(?:\#.*)*$/)) {
+                   console.log(`Link passed test.c`)
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
                     const queuesync = 100 - guilds[message.guild.id].queue.length
