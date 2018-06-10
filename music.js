@@ -31,16 +31,18 @@ client.on('message', async function(message) {
     if(!message.channel.guild) return;
     //////////////////////////////////
     if(message.content === `<@${client.user.id}>`) return message.channel.send(`Hey I'am **${client.user.username}**! , A nice music bot developed by: \`\`Abady#1196\`\` `)
-    const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
+    // const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
     const novc = "**<:MxNo:449703922190385153> | You are not in a voice channel.**"
-    const nomatch = "**<:MxNo:449703922190385153> You've to be in the same voice channel!**"
+    // const nomatch = "**<:MxNo:449703922190385153> You've to be in the same voice channel!**"
     const yt = "<:MxYT:451042476552355841>"
     const correct = client.guilds.get('448425456316973057').emojis.get("451040030635458574")
     const nope = client.guilds.get('448425456316973057').emojis.get('451040031277056001')
-    const member = message.member;
+    // const member = message.member;
+
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
     const youtube = new simpleytapi(yt_api_key);
+
 
     if (!guilds[message.guild.id]) {
         guilds[message.guild.id] = {
@@ -86,7 +88,7 @@ client.on('message', async function(message) {
                 queueclear();
                 message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
                 })
-                if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+                if (args.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/) || args.match(/^http:\/\/(?:www\.)?youtube\.com\/watch\?(?=.*v=\w+)(?:\S+)?$/)) {
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
                     const queuesync = 100 - guilds[message.guild.id].queue.length
