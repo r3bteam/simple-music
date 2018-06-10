@@ -30,7 +30,8 @@ client.on('message', async function(message) {
     if(message.author.bot) return;
     if(!message.channel.guild) return;
     //////////////////////////////////
-    if(message.content === `<@${client.user.id}>`) return message.channel.send(`Hey I'am **${client.user.username}**! , A nice music bot developed by: \`\`Abady#1196\`\` `)
+    if(message.content === `<@${client.user.id}>`) return message.channel.send(`Hey I'am **${client.user.username}**, A nice music bot developed by: \`\`Abady#1196\`\``);
+    if(message.content === `${prefix}invite`) client.generateInvite();
     // const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
     const novc = "**<:MxNo:449703922190385153> | You are not in a voice channel.**"
     // const nomatch = "**<:MxNo:449703922190385153> You've to be in the same voice channel!**"
@@ -124,7 +125,6 @@ client.on('message', async function(message) {
             })
             } else {
                 if (args.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)) {
-                    console.log('RegExp works..')
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
                     playMusic(videos[0].id, message)
