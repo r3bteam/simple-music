@@ -158,16 +158,8 @@ client.on('message', async function(message) {
         if(!message.member.voiceChannel) return message.reply(novc)
         if(message.member.hasPermission('MANAGE_CHANNELS')) {
         if (guilds[message.guild.id].queueNames[0]) {
-            if(args && !isNaN(args) && args != 0) {
-                message.channel.send(`**:fast_forward: Skipped** ${args} songs.`)
-                await guilds[message.guild.id].queue.splice(parseInt(args), 1)
-                await guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
-                skip_song(message);
-                return;
-                } else if(!args || isNaN(args) || args == 0) {
             message.channel.send(`**:fast_forward: Skipped** ${guilds[message.guild.id].queueNames[0]}`);
             return skip_song(message);
-                }
         } else return message.channel.send(`**:x: Nothing playing in this server**`);
         }
         else
