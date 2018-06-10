@@ -159,9 +159,8 @@ client.on('message', async function(message) {
         if(message.member.hasPermission('MANAGE_CHANNELS')) {
         if (guilds[message.guild.id].queueNames[0]) {
             if(args && !isNaN(args) && args != 0) {
-                await guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
-                await guilds[message.guild.id].queue.splice(parseInt(args), 1)
-                skip_song(message)
+                guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
+                guilds[message.guild.id].queue.splice(parseInt(args), 1).then(skip_song(message));
                 return message.channel.send(`**:fast_forward: Skipped** ${args} songs.`)
                 } else if(!args || isNaN(args) || args == 0) {
             message.channel.send(`**:fast_forward: Skipped** ${guilds[message.guild.id].queueNames[0]}`);
