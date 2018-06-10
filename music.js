@@ -160,8 +160,8 @@ client.on('message', async function(message) {
         if (guilds[message.guild.id].queueNames[0]) {
             if(args && !isNaN(args) && args != 0) {
                 message.channel.send(`**:fast_forward: Skipped** ${args} songs.`)
-                guilds[message.guild.id].queue.splice(parseInt(args), 1)
-                guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
+                await guilds[message.guild.id].queue.splice(parseInt(args), 1)
+                await guilds[message.guild.id].queueNames.splice(parseInt(args), 1)
                 skip_song(message);
                 return;
                 } else if(!args || isNaN(args) || args == 0) {
