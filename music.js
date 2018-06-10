@@ -98,7 +98,7 @@ client.on('message', async function(message) {
                         guilds[message.guild.id].queueNames.push(video.title)
                         guilds[message.guild.id].queue.push(video.id)
                     })
-                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${queuesync}** items Added to the **Queue**!`)                    ;
+                    return message.channel.send(`[:musical_score: __${playlist.title}__] **${queuesync}** items Added to the **Queue**!`)                    ;
                 }
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
                 getID(args, function(id) {
@@ -134,7 +134,7 @@ client.on('message', async function(message) {
                         guilds[message.guild.id].queueNames.push(video.title)
                         guilds[message.guild.id].queue.push(video.id)
                     })
-                    return message.channel.send(`:musical_score: **${playlist.title}** ➠ **${videos.slice(0, 100).length}** items Added to the **Queue**!\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
+                    return message.channel.send(`[:musical_score: __${playlist.title}__] **${videos.slice(0, 100).length}** items Added to the **Queue**!\n**Playing :notes: \`\`${videos[0].title}\`\` - Now!**`)                    ;
                 }
                 message.channel.send(`${yt} **Searching :mag_right: \`\`${args}\`\` **`).then(() => {
                 getID(args, function(id) {
@@ -341,7 +341,7 @@ else if (message.content.startsWith(prefix + 'vol') || mess.startsWith(prefix+"�
 
 else if (mess.startsWith(prefix + 'pause') || mess.startsWith(prefix+"وقف")) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
+    if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:hash: Already paused*")
     message.channel.send(':pause_button: **Paused**').then(() => {
         guilds[message.guild.id].isPlaying = false;
         guilds[message.guild.id].dispatcher.pause();
@@ -350,7 +350,7 @@ else if (mess.startsWith(prefix + 'pause') || mess.startsWith(prefix+"وقف")) 
 
 else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل")) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
+    if (guilds[message.guild.id].isPlaying) return message.channel.send("**:hash: Nothing to resume.**")
     message.channel.send(':play_pause: **Resuming**').then(() => {
         guilds[message.guild.id].isPlaying = true;
         guilds[message.guild.id].dispatcher.resume();
