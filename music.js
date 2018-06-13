@@ -41,6 +41,7 @@ client.on('message', async function(message) {
     // const member = message.member;
 
     if (message.content.startsWith(`${prefix}eval`)) {
+        const eargs = message.content.split(" ").slice(1);
         if(!devs.includes(message.author.id)) return;
         const clean = text => {
             if (typeof(text) === "string")
@@ -49,7 +50,7 @@ client.on('message', async function(message) {
                 return text;
           }
         try {
-          const code = args
+          const code = eargs.join(" ");
           let evaled = eval(code);
     
           if (typeof evaled !== "string")
