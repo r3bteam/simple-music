@@ -24,6 +24,7 @@ client.on('reconnecting', function() {
 client.on('disconnect', function() {
     console.log("[Disconnecting...] Matrix Premium Music Bot V0.9");
 });
+client.on('error', (err) => console.log(err));
 /////////////////////////////////////////////////////////////////////////////////
 
 client.on('message', async function(message) {
