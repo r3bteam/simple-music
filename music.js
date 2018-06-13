@@ -49,7 +49,7 @@ client.on('message', async function(message) {
                 return text;
           }
         try {
-          const code = args.join(" ");
+          const code = args
           let evaled = eval(code);
     
           if (typeof evaled !== "string")
@@ -63,7 +63,6 @@ client.on('message', async function(message) {
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
     const youtube = new simpleytapi(yt_api_key);
-
 
     if (!guilds[message.guild.id]) {
         guilds[message.guild.id] = {
