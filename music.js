@@ -48,6 +48,13 @@ client.on('message', async function(message) {
     
           if (typeof evaled !== "string")
             evaled = require("util").inspect(evaled);
+            
+            const clean = text => {
+                if (typeof(text) === "string")
+                  return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+                else
+                    return text;
+              }
     
           message.channel.send(clean(evaled), {code:"xl"});
         } catch (err) {
