@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
-const client = new Discord.Client({disableEveryone: true});
+const { Client, RichEmbed } = require("discord.js");
+const client = new Client({ disableEveryone: true})
 const ytdl = require("ytdl-core");
 const devs = ["340653929429729281" , "171259176029257728" , "349124522747887616" , "447804943454175232"]
 const request = require("request");
@@ -39,6 +39,21 @@ client.on('message', async function(message) {
     const nope = client.guilds.get('448425456316973057').emojis.get('451040031277056001')
     // const member = message.member;
 
+    if (message.content.startsWith(`${prefix}eval`)) {
+        if(!devs.includes(message.author.id)) return;
+        try {
+          const code = args.join(" ");
+          let evaled = eval(code);
+    
+          if (typeof evaled !== "string")
+            evaled = require("util").inspect(evaled);
+    
+          message.channel.send(clean(evaled), {code:"xl"});
+        } catch (err) {
+          message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
+        }
+      }
+    
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
     const youtube = new simpleytapi(yt_api_key);
@@ -107,7 +122,7 @@ client.on('message', async function(message) {
                         if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
                         else message.react(correct)
                         add_to_queue(id, message);
-                        message.channel.send(new Discord.RichEmbed()
+                        message.channel.send(new RichEmbed()
                         .setAuthor("Added to queue", message.author.avatarURL)
                         .setTitle(videoInfo.title)      
                         .setURL(videoInfo.url)
@@ -221,7 +236,7 @@ if(mess.startsWith(prefix+"np")) {
     await fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
                         if (err) throw new Error(err);
                         message.channel.stopTyping(true);
-                        message.channel.send(new Discord.RichEmbed()
+                        message.channel.send(new RichEmbed()
                         .setAuthor("Now Playing.", videoInfo.thumbnailUrl)
                         .setTitle(videoInfo.title)      
                         .setURL(videoInfo.url)
@@ -309,7 +324,7 @@ message.channel.send(`**Playing :notes: \`\`${videos[videoIndex - 1].title}\`\` 
             if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
             else message.react(correct)
             add_to_queue(id, message);
-            message.channel.send(new Discord.RichEmbed()
+            message.channel.send(new RichEmbed()
             .setAuthor("Added to queue", message.author.avatarURL)
             .setTitle(videoInfo.title)
             .setURL(videoInfo.url)
