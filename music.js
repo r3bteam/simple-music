@@ -81,9 +81,8 @@ client.on('message', async function(message) {
         let u = convertMS(client.uptime);
         let uptime = u.d + " days  , " + u.h + " hrs  , " + u.m + " mins  , " + u.s + " secs"
         message.channel.send(new RichEmbed() 
-        .setTitle("FoxMC Bot - By Abady")
-        .setURL("https://abayro.xyz")
         .setAuthor(client.user.username,client.user.avatarURL)
+        .setURL("https://abayro.xyz")
         .addField("Version", "1.0v", true)
         .addField("Library", "discordjs", true)
         .addField("Creator", "Abady", true)
