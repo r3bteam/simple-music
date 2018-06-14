@@ -60,6 +60,40 @@ client.on('message', async function(message) {
           message.channel.send(`\`ERROR\` \`\`\`xl\n${clean(err)}\n\`\`\``);
         }
       }
+
+      if(message.content.startsWith(`${prefix}info`)) {
+        function convertMS(ms) {
+            var d, h, m, s;
+            s = Math.floor(ms / 1000);
+            m = Math.floor(s / 60);
+            s = s % 60;
+            h = Math.floor(m / 60);
+            m = m % 60;
+            d = Math.floor(h / 24);
+            h = h % 24;
+            return {
+                d: d,
+                h: h,
+                m: m,
+                s: s
+            };
+        };   
+        let u = convertMS(client.uptime);
+        let uptime = u.d + " days  , " + u.h + " hrs  , " + u.m + " mins  , " + u.s + " secs"
+        message.channel.send(new RichEmbed() 
+        .setTitle("FoxMC Bot - By Abady")
+        .setURL("https://abayro.xyz")
+        .setAuthor(client.user.username,client.user.avatarURL)
+        .addField("Version", "1.0v", true)
+        .addField("Library", "discordjs", true)
+        .addField("Creator", "Abady", true)
+        .addField("Users", `${client.users.size}`, true)
+        .addField('RAM Usage',`${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`,true)     
+        .addField("Website", "https://abayro.xyz", true)
+        .setFooter("Uptime "+`${uptime}`)
+        .setColor("RANDOM")
+    )
+      }
     
     const mess = message.content.toLowerCase();
     const args = message.content.split(' ').slice(1).join(" ");
