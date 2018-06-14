@@ -138,10 +138,9 @@ client.on('message', async function(message) {
         if (!permissions.has('SPEAK')) return message.channel.send({embed: {description: "🛑 I don't have permission to SPEAK! Give me some."}});
          if (args.length == 0 || !args) return message.channel.send(`:musical_note: ❯ m-play **Youtube URL / Search**`)
             if (guilds[message.guild.id].queue.length > 0 || guilds[message.guild.id].isPlaying) {
-                if(guilds[message.guild.id].queue.length > 100) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(()=> {
-                queueclear();
-                message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
-                })
+                if(guilds[message.guild.id].queue.length > 100) return message.channel.send(``, {embed: {
+                    description: `🔒 Sorry, max queue length is 100, do **${prefix}clear** to clear entire queue or **${prefix}clear <number>** to clear 1 item`
+                }})
                 if (args.match(/^.*(youtu.be\/|list=)([^#\&\?]*).*/)) {
                     const playlist = await youtube.getPlaylist(args);
                     const videos = await playlist.getVideos();
@@ -334,10 +333,9 @@ var response = await message.channel.awaitMessages(msg2 => msg2.content > 0 && m
 } catch (error) {
 return message.channel.send(`**:x: Timeout**`) 
 }
-if(guilds[message.guild.id].queue.length > 100) return message.channel.send(`**Sorry, the max size of queue is 250 at the moment**\nClearing queue.....`).then(async function(){
-    await queueclear(); //
-    message.edit(`**Cleared queue :thumbsup::skin-tone-1:**`)
-})
+if(guilds[message.guild.id].queue.length > 100) return message.channel.send(``, {embed: {
+    description: `🔒 Sorry, max queue length is 100, do **${prefix}clear** to clear entire queue or **${prefix}clear <number>** to clear 1 item`
+}})
 if(response.first().content === 'cancel') return message.channel.send(`**Cancelled it for yah :wink:**`)
 const videoIndex = parseInt(response.first().content)
 const voiceChannel = message.member.voiceChannel
