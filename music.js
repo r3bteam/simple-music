@@ -13,17 +13,6 @@ const prefix = "m-";
 client.login(process.env.SECERT_KEY);
 var guilds = {};
 /////////////////////////////////////////////////////////////////
-client.on('ready', function() {
-    console.log("[Launching...] Matrix Premium Music Bot V0.9");
-}).once('ready', function(){
-client.user.setActivity(":tada 1.0 version!", {type: "LISTENING"})
-})
-client.on('reconnecting', function() {
-    console.log("[Reconnting...] Matrix Premium Music Bot V0.9");
-});
-client.on('disconnect', function() {
-    console.log("[Disconnecting...] Matrix Premium Music Bot V0.9");
-});
 client.on('error', (err) => console.log(err));
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -276,13 +265,13 @@ if(mess.startsWith(prefix+"np")) {
                         if (err) throw new Error(err);
                         message.channel.stopTyping(true);
                         message.channel.send(new RichEmbed()
-                        .setAuthor("Now Playing.", videoInfo.thumbnailUrl)
+                        .setAuthor("Now Playing", message.guild.iconURL)
                         .setTitle(videoInfo.title)      
                         .setURL(videoInfo.url)
-                        .addField("Channel", videoInfo.owner, true)
+                        .addField("Channel", `[${videoInfo.owner}](https://youtube.com/channel/${videoInfo.channelId})`, true)
                         .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
                         .addField("Views",short(videoInfo.views), true)
-                        .addField("Likes/Dislikes", `👍 ${short(videoInfo.likeCount)} / 👎 ${short(videoInfo.dislikeCount)}`, true)
+                        .addField("Likes/Dislikes", `👍 **${short(videoInfo.likeCount)}** / 👎 **${short(videoInfo.dislikeCount)}**`, true)
                         .setColor("RED")
 						.setThumbnail(videoInfo.thumbnailUrl)
                         )
