@@ -307,7 +307,7 @@ if(mess.startsWith(prefix+"stfu") || message.content.startsWith(`<@${client.user
     { 
     await clear()
     message.guild.voiceConnection.disconnect();
-    message.channel.send(`<:stfu:452319846261194773> k sempai!`)
+    message.channel.send(`:cry: k sempai!`)
     }
 }
 
@@ -322,7 +322,7 @@ if(message.content.startsWith(prefix+"search")) {
     name: `${message.author.username} (${message.author.id})`  
     },
     footer: {
-        text: "Select a song from 1 to 10, or do  to cancel!",
+        text: `Type a num between 1 and ${videos.length+1}, type cancel to cancel.`,
     }
     }})
 try {
