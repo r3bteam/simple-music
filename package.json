@@ -22,6 +22,7 @@
     "hh-mm-ss": "^1.2.0",
     "node-opus": "^0.3.0",
     "request": "^2.85.0",
+    "short-number": "^1.0.6",
     "simple-youtube-api": "^5.0.2",
     "youtube-info": "^1.2.0",
     "ytdl-core": "^0.20.4"

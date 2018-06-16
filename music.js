@@ -269,8 +269,9 @@ client.on('message', async function(message) {
     }
 
 if(mess.startsWith(prefix+"np")) {
+    const short = require('short-number');
     if(!guilds[message.guild.id].queue[0] || !guilds[message.guild.id].isPlaying) return message.channel.send(`**:x: Nothing playing in this server.**`)
-    message.channel.startTyping()
+    await message.channel.startTyping()
     await fetchVideoInfo(guilds[message.guild.id].queue[0], function(err, videoInfo) {
                         if (err) throw new Error(err);
                         message.channel.stopTyping(true);
@@ -280,8 +281,8 @@ if(mess.startsWith(prefix+"np")) {
                         .setURL(videoInfo.url)
                         .addField("Channel", videoInfo.owner, true)
                         .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
-                        .addField("Like Count", `👍 ${videoInfo.likeCount}`, true)
-                        .addField("Dislike Count",`👎 ${videoInfo.dislikeCount}`, true)
+                        .addField("Like Count", `👍 ${short(videoInfo.likeCount)}`, true)
+                        .addField("Dislike Count",`👎 ${short(videoInfo.dislikeCount)}`, true)
 						.setColor("RED")
 						.setThumbnail(videoInfo.thumbnailUrl)
                         )
