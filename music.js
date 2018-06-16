@@ -311,7 +311,7 @@ if(message.content.startsWith(prefix+"search")) {
     name: `${message.author.username} (${message.author.id})`  
     },
     footer: {
-        text: `Type a num between 1 and ${videos.length+1}, type cancel to cancel.`,
+        text: `Type a num between 1 and ${videos.length}, type cancel to cancel.`,
     }
     }})
 try {
