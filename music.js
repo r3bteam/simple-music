@@ -14,6 +14,7 @@ client.login(process.env.SECERT_KEY);
 var guilds = {};
 /////////////////////////////////////////////////////////////////
 client.on('error', (err) => console.log(err));
+client.on('ready', () => console.log(`Launching...`))
 /////////////////////////////////////////////////////////////////////////////////
 
 client.on('message', async function(message) {
