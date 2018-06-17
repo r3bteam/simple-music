@@ -97,7 +97,7 @@ client.on('message', async function(message) {
             volume: 1,
             skipReq: 0,
             skippers: [],
-            // loop: false
+            loop: false
         };
     }
 
@@ -109,7 +109,7 @@ client.on('message', async function(message) {
         guilds[message.guild.id].voiceChannel = null;
         guilds[message.guild.id].skipReq = 0;
         guilds[message.guild.id].skipReq = [];
-        // guilds[message.guild.id].loop = false;
+        guilds[message.guild.id].loop = false;
         guilds[message.guild.id].volume = 1 ;
     }
 
@@ -400,20 +400,20 @@ else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل"))
 }
 
 
-// ONE ITEM WORKS, BUT QUEUE NO... ==> GOING TO BE RELEASE IN 1.0 VERISON OF THE BOT
+// ONE ITEM WORKS, BUT QUEUE NO... ==> QUEUE LOOP SYSTEM IN 2.0
 
-// else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
-//     if (!message.member.voiceChannel) return message.reply(novc);
-//     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
-//     if(guilds[message.guild.id].loop = true) {
-//         message.channel.send(`:arrow_right_hook: **Looping Disabled**`)
-//         guilds[message.guild.id].loop = false;        
-//         return;
-//     } else {
-//     guilds[message.guild.id].loop = true;
-//     message.channel.send(':repeat_one: **Looping Enabled!**')
-//     }
-// }
+else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
+    if (!message.member.voiceChannel) return message.reply(novc);
+    if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
+    if(guilds[message.guild.id].loop = true) {
+        message.channel.send(`:arrow_right_hook: **Looping Disabled**`)
+        guilds[message.guild.id].loop = false;        
+        return;
+    } else {
+    guilds[message.guild.id].loop = true;
+    message.channel.send(':repeat_one: **Looping Enabled!**')
+    }
+}
 
 
 else if (mess.startsWith(prefix + 'join') || mess.startsWith(prefix+"ادخل")) {
@@ -468,8 +468,7 @@ async function playMusic(id, message) {
         guilds[message.guild.id].dispatcher.on('end', async function() {
             guilds[message.guild.id].skipReq = 0;
             guilds[message.guild.id].skippers = [];
-        //    if(guilds[message.guild.id].loop = true) return playMusic(guilds[message.guild.id].queue[0], message);                          
-            // let queueMusic = guilds[message.guild.id].queue.slice(i)[0]
+           if(guilds[message.guild.id].loop = true) return playMusic(guilds[message.guild.id].queue[0], message);                          
            await guilds[message.guild.id].queue.shift();
            await guilds[message.guild.id].queueNames.shift();
             if (guilds[message.guild.id].queue.length === 0) {
