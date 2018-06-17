@@ -379,18 +379,16 @@ else if (message.content.startsWith(prefix + 'vol') || mess.startsWith(prefix+"�
 
 else if (mess.startsWith(prefix + 'pause') || mess.startsWith(prefix+"وقف")) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if (guilds[message.guild.id].dispatcher.paused === true) return message.channel.send("**:hash: Already paused*")
+    if (guilds[message.guild.id].dispatcher.paused === true) return message.channel.send("*:hash: Already paused*")
     message.channel.send(':pause_button: **Paused**').then(() => {
-        guilds[message.guild.id].isPlaying = false;
         guilds[message.guild.id].dispatcher.pause();
     });
 }
 
 else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل")) {
     if (!message.member.voiceChannel) return message.reply(novc);
-    if (guilds[message.guild.id].dispatcher.paused === false) return message.channel.send("**:hash: Nothing to resume.**")
+    if (guilds[message.guild.id].dispatcher.paused === false) return message.channel.send("*:hash: Nothing to resume.*")
     message.channel.send(':play_pause: **Resuming**').then(() => {
-        guilds[message.guild.id].isPlaying = true;
         guilds[message.guild.id].dispatcher.resume();
     });
 }
