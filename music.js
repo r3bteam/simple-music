@@ -403,9 +403,10 @@ else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
         message.channel.send(`:arrow_right_hook: **Looping Disabled**`)
         guilds[message.guild.id].loop = false;        
         return;
-    } else {
-    guilds[message.guild.id].loop === true;
+    } else if(guilds[message.guild.id].loop === false) {
+    guilds[message.guild.id].loop = true;
     message.channel.send(':repeat_one: **Looping Enabled!**')
+    return;
     }
 }
 
