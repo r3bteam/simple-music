@@ -399,12 +399,12 @@ else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل"))
 else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
-    if(guilds[message.guild.id].loop != false) {
+    if(guilds[message.guild.id].loop === true) {
         message.channel.send(`:arrow_right_hook: **Looping Disabled**`)
         guilds[message.guild.id].loop = false;        
         return;
     } else {
-    guilds[message.guild.id].loop = true;
+    guilds[message.guild.id].loop === true;
     message.channel.send(':repeat_one: **Looping Enabled!**')
     }
 }
