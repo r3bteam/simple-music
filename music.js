@@ -19,6 +19,7 @@ client.on('error', (err) => console.log(err));
 client.on('message', async function(message) {
     if(message.author.bot) return;
     if(!message.channel.guild) return;
+    console.log(guilds[message.guild.id]);
     //////////////////////////////////
     if(message.content === `<@${client.user.id}>`) return message.channel.send(`Hey I'am **${client.user.username}**, A nice music bot developed by: \`\`Abady#1196\`\``);
     // const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
@@ -400,7 +401,7 @@ else if (mess.startsWith(prefix + 'resume') || mess.startsWith(prefix+"كمل"))
 else if (mess.startsWith(prefix + 'loop') || mess.startsWith(prefix+"عيد")) {
     if (!message.member.voiceChannel) return message.reply(novc);
     if (!guilds[message.guild.id].isPlaying) return message.channel.send("**:x: Nothing playing in this server**")
-    if(guilds[message.guild.id].loop = true) {
+    if(guilds[message.guild.id].loop != false) {
         message.channel.send(`:arrow_right_hook: **Looping Disabled**`)
         guilds[message.guild.id].loop = false;        
         return;
