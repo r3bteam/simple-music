@@ -20,7 +20,6 @@ client.on('ready', () => console.log(`Launching...`))
 client.on('message', async function(message) {
     if(message.author.bot) return;
     if(!message.channel.guild) return;
-    console.log(guilds[message.guild.id]);
     //////////////////////////////////
     if(message.content === `<@${client.user.id}>`) return message.channel.send(`Hey I'am **${client.user.username}**, A nice music bot developed by: \`\`Abady#1196\`\``);
     // const noms = "** ❯ :musical_note: No music is playing, try ``m-play``" 
