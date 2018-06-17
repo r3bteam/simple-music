@@ -113,11 +113,6 @@ client.on('message', async function(message) {
         guilds[message.guild.id].volume = 1 ;
     }
 
-    function queueclear() { 
-        guilds[message.guild.id].queue.slice(1) = [];
-        guilds[message.guild.id].queueNames.slice(1) = [];
-    }
-
 
     if (mess.startsWith(prefix + "play") || mess.startsWith(prefix+"شغل")) {
         if (message.member.voiceChannel || guilds[message.guild.id].voiceChannel != null) {
