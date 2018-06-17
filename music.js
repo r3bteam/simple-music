@@ -94,6 +94,7 @@ client.on('message', async function(message) {
             isPlaying: false,
             dispatcher: null,
             voiceChannel: null,
+            savequeue: false,
             volume: 1,
             skipReq: 0,
             skippers: [],
@@ -283,9 +284,22 @@ if(mess.startsWith(prefix+"stop") || mess.startsWith(prefix+"اطلع")) {
     if(guilds[message.guild.id].isPlaying) guilds[message.guild.id].dispatcher.end();
     if (guilds[message.guild.id].voiceChannel)
     { 
+    if("savequeue" in guilds[message.guild.id]) {
+    await message.guild.voiceConnection.disconnect();
+    return message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`);
+    } else {
     await clear()
     message.guild.voiceConnection.disconnect();
-    message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`)
+    return message.channel.send(`**:mailbox_with_no_mail: Successfully disconnected!**`);
+    }}
+}
+
+if(mess.startsWith(prefix+"save")) {
+    if(!"savequeue" in guilds[message.guild.id]) {
+guilds[message.guild.id].savequeue = true;
+message.channel.send(`:inbox_tray: Saved current Queue with **${guilds[message.guild.id].queue.length}** in it!`)
+    } else {
+        delete guilds[message.guild.id].savequeue
     }
 }
 
