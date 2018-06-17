@@ -144,7 +144,7 @@ client.on('message', async function(message) {
                 }
                 message.channel.send(`**${yt} Searching :mag_right: \`\`${args}\`\`**`).then(()=> {
                 getID(args, function(id) {
-                    fetchVideoInfo(id, function(err, videoInfo) {
+                   await fetchVideoInfo(id, function(err, videoInfo) {
                         if (err) throw new Error(err);
                         if(videoInfo.duration > 1800) return message.channel.send(`**${message.author.username}, :x: Cannot play a video that's longer than 30 minutes**`).then(message.react(nope));
                         else message.react(correct)
@@ -273,7 +273,7 @@ if(mess.startsWith(prefix+"np")) {
                         .addField("Views",short(videoInfo.views), true)
                         .addField("Likes/Dislikes", `👍 **${short(videoInfo.likeCount)}** / 👎 **${short(videoInfo.dislikeCount)}**`, true)
                         .setColor("RED")
-						.setThumbnail(videoInfo.thumbnailUrl)
+						.setImage(videoInfo.thumbnailUrl)
                         )
     })
 }
