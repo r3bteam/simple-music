@@ -261,12 +261,10 @@ if(mess.startsWith(prefix+"np")) {
                         if (err) throw new Error(err);
                         message.channel.stopTyping(true);
                         message.channel.send(new RichEmbed()
-                        .setAuthor("Now Playing", message.guild.iconURL)
                         .setTitle(videoInfo.title)      
                         .setURL(videoInfo.url)
-                        .setDescription(`[**Download MP3**](https://www.flvto.biz/sa/downloads/mp3/yt_${videoInfo.videoId})`)
                         .addField("Channel", `[**${videoInfo.owner}**](https://youtube.com/channel/${videoInfo.channelId})`, true)
-                        .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
+                        .addField("Duration", `${convert.fromS(videoInfo.duration, 'mm:ss')} — [**Download MP3**](https://www.flvto.biz/sa/downloads/mp3/yt_${videoInfo.videoId})`, true)
                         .addField("Views", short(videoInfo.views), true)
                         .addField("Likes/Dislikes", `👍 **${short(videoInfo.likeCount)}** / 👎 **${short(videoInfo.dislikeCount)}**`, true)
                         .setColor("RED")
