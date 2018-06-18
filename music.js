@@ -266,7 +266,7 @@ if(mess.startsWith(prefix+"np")) {
                         .setURL(videoInfo.url)
                         .addField("Channel", `[${videoInfo.owner}](https://youtube.com/channel/${videoInfo.channelId})`, true)
                         .addField("Duration", convert.fromS(videoInfo.duration, 'mm:ss') , true)
-                        .addField("Views",short(videoInfo.views), true)
+                        .addField("Views",`${short(videoInfo.views)} - [Download](https://www.flvto.biz/sa/downloads/mp3/yt_${videoInfo.videoId})`, true)
                         .addField("Likes/Dislikes", `👍 **${short(videoInfo.likeCount)}** / 👎 **${short(videoInfo.dislikeCount)}**`, true)
                         .setColor("RED")
 						.setImage(videoInfo.thumbnailUrl)
